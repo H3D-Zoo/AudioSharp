@@ -23,14 +23,14 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FLAC_DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FLAC_DEBUG;NET_35;NET_30;NET_20</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <DocumentationFile>bin\Debug\CSCore.XML</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
-    <NoWarn>1573</NoWarn>
+    <NoWarn>1573;1591;1587;1574;1572;1734;3008;3001;3005;3002</NoWarn>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -191,6 +191,25 @@
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
     <Compile Include="Codecs\WMA\WmaDecoder.cs" />
+    <Compile Include="COM\ComObject.cs" />
+    <Compile Include="COM\ComObjectShadow.cs" />
+    <Compile Include="COM\Configuration.cs" />
+    <Compile Include="COM\CppObject.cs" />
+    <Compile Include="COM\CppObjectShadow.cs" />
+    <Compile Include="COM\CppObjectVtbl.cs" />
+    <Compile Include="COM\DisposeBase.cs" />
+    <Compile Include="COM\DisposeEventArgs.cs" />
+    <Compile Include="COM\FunctionCallback.cs" />
+    <Compile Include="COM\ICallbackable.cs" />
+    <Compile Include="COM\IInspectable.cs" />
+    <Compile Include="COM\InspectableShadow.cs" />
+    <Compile Include="COM\IUnknown.cs" />
+    <Compile Include="COM\ObjectTracker.cs" />
+    <Compile Include="COM\Result.cs" />
+    <Compile Include="COM\ResultDescriptor.cs" />
+    <Compile Include="COM\ShadowAttribute.cs" />
+    <Compile Include="COM\ShadowContainer.cs" />
+    <Compile Include="COM\SharpDXException.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientBufferFlags.cs" />
     <Compile Include="CoreAudioAPI\AudioClientSessionFlags.cs" />
@@ -227,6 +246,12 @@
     <Compile Include="CoreAudioAPI\MMEndpoint.cs" />
     <Compile Include="CoreAudioAPI\SessionCreatedEventArgs.cs" />
     <Compile Include="CoreAudioAPI\VolumeDuckNotificationEventArgs.cs" />
+    <Compile Include="DirectSound\Buffer3DSettings.cs" />
+    <Compile Include="DirectSound\Capabilities.cs" />
+    <Compile Include="DirectSound\CaptureBufferCapabilities.cs" />
+    <Compile Include="DirectSound\CaptureBufferDescription.cs" />
+    <Compile Include="DirectSound\CaptureCapabilities.cs" />
+    <Compile Include="DirectSound\CaptureEffectDescription.cs" />
     <Compile Include="DirectSound\DirectSound8.cs" />
     <Compile Include="DirectSound\DirectSoundBase.cs" />
     <Compile Include="DirectSound\DirectSoundBuffer.cs" />
@@ -252,8 +277,17 @@
     <Compile Include="DirectSound\DSSpeakerConfigurations.cs" />
     <Compile Include="DirectSound\DSSpeakerGeometry.cs" />
     <Compile Include="DirectSound\DSUtils.cs" />
+    <Compile Include="DirectSound\Generated\Enumerations.cs" />
+    <Compile Include="DirectSound\Generated\Functions.cs" />
+    <Compile Include="DirectSound\Generated\Interfaces.cs" />
     <Compile Include="DirectSound\InteropCalls.cs" />
+    <Compile Include="DirectSound\Generated\LocalInterop.cs" />
+    <Compile Include="DirectSound\Listener3DSettings.cs" />
     <Compile Include="DirectSound\NativeMethods.cs" />
+    <Compile Include="DirectSound\Generated\Structures.cs" />
+    <Compile Include="DirectSound\NotificationPosition.cs" />
+    <Compile Include="DirectSound\SoundBufferCapabilities.cs" />
+    <Compile Include="DirectSound\SoundBufferDescription.cs" />
     <Compile Include="DMO\DmoAggregator.cs" />
     <Compile Include="DMO\DmoEnumeratorCategories.cs" />
     <Compile Include="DMO\DmoEnumFlags.cs" />
@@ -332,6 +366,16 @@
     <Compile Include="MediaFoundation\SourceReaderControlFlags.cs" />
     <Compile Include="MediaFoundation\TranscodeContainerTypes.cs" />
     <Compile Include="MmResult.cs" />
+    <Compile Include="Multimedia\Enumerations.cs" />
+    <Compile Include="Multimedia\WaveFormat.cs" />
+    <Compile Include="Multimedia\WaveFormatAdpcm.cs" />
+    <Compile Include="Multimedia\WaveFormatExtensible.cs" />
+    <Compile Include="Sharp\Interop.cs" />
+    <Compile Include="Sharp\RawBool.cs" />
+    <Compile Include="Sharp\RawVector3.cs" />
+    <Compile Include="Sharp\TagAttribute.cs" />
+    <Compile Include="Sharp\TypeExtensions.cs" />
+    <Compile Include="Sharp\Utilities.cs" />
     <Compile Include="SoundIn\RecordingState.cs" />
     <Compile Include="SoundIn\RecordingStoppedEventArgs.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
@@ -602,7 +646,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
     </None>
-    <None Include="Base.cd" />
     <None Include="Codecs\FLAC\FlacFrame_GetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
@@ -618,6 +661,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DirectSound\Documentation\CodeComments.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -629,70 +675,19 @@
       set target=$(TargetPath)
       set project=$(ProjectPath)
 
-      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
-      set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
-      set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
-      set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
-
-      IF exist "%25sdk%25\." (
-      echo OK: The Microsoft Windows SDK was found.
-      ) else (
-      echo FAILED: The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25framework%25\." (
-      echo OK: The .NET Framework Dir was found.
-      ) else (
-      echo FAILED: The Framework-Dir was not found. Check the following path: "%25framework%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25inlineILCompiler%25" (
-      echo OK: Found the inline-il-compiler.
-      ) else (
-      echo FAILED: The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25cscli%25" (
-      echo OK: Found the cscli-compiler.
-      ) else (
-      echo FAILED: The cscli was not found. Check the following path: "%25cscli%25"
-      goto EXIT_ERR
-      )
-
-      if $(ConfigurationName) == Debug (
-      echo Build-Configuration: DEBUG
-      echo    DEBUG=IMPL
-      echo    NO OPTIMIZE
-      set ilasm_args=/DLL /DEBUG=IMPL
-      ) else (
-      if $(ConfigurationName) == Release (
-      echo Build-Configuration: RELEASE
-      echo    NO DEBUG
-      echo    OPTIMIZE
-      set ilasm_args=/DLL /OPTIMIZE
-      ) else (
-      echo FAILED: Invalid Configuration.
-      goto EXIT_ERR
-      )
-      )
+      set sharpcli=$(SolutionDir)Tools\SharpCli\bin\$(ConfigurationName)\SharpCli.exe
 
       echo.
       echo.
-      echo Calling the inline-il-compiler ...
-      call "%25inlineILCompiler%25"
-
-      echo.
-      echo.
-      echo Calling CSCli ...
-      call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
+      echo Calling SharpCli ...
+      call "%25sharpcli%25" "$(TargetPath)"
 
       :EXIT
       EXIT /B %25errorCode%25
 
       :EXIT_ERR
       set errorCode=-1
-      goto EXIT
-</PostBuildEvent>
+      goto EXIT</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
