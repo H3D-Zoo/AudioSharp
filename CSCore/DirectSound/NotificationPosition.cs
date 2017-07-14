@@ -25,6 +25,17 @@ namespace SharpDX.DirectSound
 {
     public partial class NotificationPosition
     {
+
+        /// <summary>
+        /// Zero offset.
+        /// </summary>
+        public const int OffsetZero = 0x0;
+
+        /// <summary>
+        /// Causes the event to be signaled when playback or capture stops, either because the end of the buffer has been reached (and playback or capture is not looping) or because the application called the <see cref="DirectSoundBuffer.Stop"/> or IDirectSoundCaptureBuffer8::Stop method.
+        /// </summary>
+        public const int OffsetStop = unchecked((int)0xFFFFFFFF);
+
         /// <summary>
         /// Gets or sets the wait handle.
         /// </summary>
@@ -52,7 +63,7 @@ namespace SharpDX.DirectSound
         internal unsafe void __MarshalTo(ref __Native @ref)
         {
             @ref.Offset = this.Offset;
-#if !NET_45
+#if !NET_45 || BEFORE_NET45
             @ref.EventNotifyHandlerPointer = this.WaitHandle.SafeWaitHandle.DangerousGetHandle();
 #else
             @ref.EventNotifyHandlerPointer = this.WaitHandle.GetSafeWaitHandle().DangerousGetHandle();

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using CSCore.DirectSound;
+using SharpDX.DirectSound;
+using System.Runtime.InteropServices;
 
 namespace CSCore.SoundOut
 {
@@ -14,16 +15,16 @@ namespace CSCore.SoundOut
         private readonly SynchronizationContext _syncContext;
         private Guid _device;
 
-        private IDirectSound8 _directSound;
+        private DirectSound _directSound;
 
-        private IDirectSoundNotify _directSoundNotify;
+        private SoundBufferNotifier _directSoundNotify;
         private bool _disposed;
 
         private int _latency;
         private volatile PlaybackState _playbackState;
         private Thread _playbackThread;
-        private IDirectSoundBuffer _primaryBuffer;
-        private IDirectSoundBuffer _secondaryBuffer;
+        private SoundBuffer _primaryBuffer;
+        private SoundBuffer _secondaryBuffer;
         private IWaveSource _source;
 
         private readonly object _lockObj = new object();
@@ -86,7 +87,7 @@ namespace CSCore.SoundOut
             Latency = latency;
             _playbackThreadPriority = playbackThreadPriority;
             _syncContext = eventSyncContext;
-            Device = DirectSoundDevice.DefaultDevice.Guid;
+            Device = DirectSound.DefaultDevice.DriverGuid;
         }
 
         /// <summary>
@@ -312,15 +313,21 @@ namespace CSCore.SoundOut
             GC.SuppressFinalize(this);
         }
 
+        private static readonly SoundBufferDescription DefaultPrimaryBufferDescription =
+          new SoundBufferDescription()
+          {
+              BufferBytes = 0,
+              Flags = BufferFlags.PrimaryBuffer | BufferFlags.ControlVolume,
+              Reserved = 0,
+              pFormat = IntPtr.Zero,
+              AlgorithmFor3D = Guid.Empty
+          };
+
         private void InitializeInternal()
         {
-            //Use Desktophandle as default handle
-            IntPtr handle = DSUtils.GetDesktopWindow();
+            _directSound = new DirectSound();
 
-            NativeMethods.DirectSoundCreate8(ref _device, out _directSound, IntPtr.Zero);
-           
-
-            _directSound.SetCooperativeLevel(handle, DirectSoundCooperativeLevel.Normal); //use normal as default
+            _directSound.SetCooperativeLevel(IntPtr.Zero, CooperativeLevel.Normal); //use normal as default
             if (!_directSound.SupportsFormat(_source.WaveFormat))
             {
                 if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat) //directsound does not support ieeefloat
@@ -351,8 +358,27 @@ namespace CSCore.SoundOut
             WaveFormat waveFormat = _source.WaveFormat;
             var bufferSize = (int) waveFormat.MillisecondsToBytes(_latency);
 
-            _primaryBuffer = DirectSoundPrimaryBuffer.Create(_directSound);
-            _secondaryBuffer = DirectSoundSecondaryBuffer.Create(_directSound, waveFormat, bufferSize * 2);
+            IntPtr dsBufferOut;
+            _directSound.CreateSoundBuffer(DefaultPrimaryBufferDescription,out dsBufferOut, null);
+            _primaryBuffer = new SoundBuffer(dsBufferOut);
+
+            SoundBufferDescription secondaryBufferDesc = new SoundBufferDescription()
+            {
+                BufferBytes = bufferSize*2,
+                Flags = BufferFlags.ControlFrequency | BufferFlags.ControlPan |
+                       BufferFlags.ControlVolume | BufferFlags.ControlPositionNotify |
+                       BufferFlags.GetCurrentPosition2 | BufferFlags.GlobalFocus |
+                       BufferFlags.StickyFocus,
+                Reserved = 0,
+                AlgorithmFor3D = Guid.Empty
+            };
+
+            secondaryBufferDesc.Size = Marshal.SizeOf(secondaryBufferDesc);
+            GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
+            secondaryBufferDesc.pFormat = hWaveFormat.AddrOfPinnedObject();
+
+            _directSound.CreateSoundBuffer(secondaryBufferDesc,out dsBufferOut, null);
+            _secondaryBuffer = new SoundBuffer(dsBufferOut);
         }
 
         private void PlaybackProc(object o)
@@ -365,11 +391,11 @@ namespace CSCore.SoundOut
             {
                 //004
                 //bool flag = true;
-                int bufferSize = _secondaryBuffer.GetCaps().BufferBytes;
+                int bufferSize = _secondaryBuffer.Caps.BufferBytes;
                 var latencyBytes = (int) _source.WaveFormat.MillisecondsToBytes(_latency);
                 var buffer = new byte[bufferSize];
 
-                _primaryBuffer.Play(DirectSoundPlayFlags.Looping); //default flags: looping
+                _primaryBuffer.Play(PlayFlags.Looping); //default flags: looping
 
                 //003
                 /*if (flag) //could refill buffer
@@ -383,23 +409,23 @@ namespace CSCore.SoundOut
 
                 waitHandles = new WaitHandle[] {waitHandleNull, waitHandle0, waitHandleEnd};
 
-                _directSoundNotify = (IDirectSoundNotify)_secondaryBuffer;
-                DSBPositionNotify[] positionNotifies =
+                _directSoundNotify = _secondaryBuffer.QueryInterface<SoundBufferNotifier>();
+                NotificationPosition[] positionNotifies =
                 {
-                    new DSBPositionNotify
+                    new NotificationPosition
                     {
-                        Offset = DSBPositionNotify.OffsetZero,
-                        EventNotifyHandle = waitHandleNull.SafeWaitHandle.DangerousGetHandle()
+                        Offset = NotificationPosition.OffsetZero,
+                        EventNotifyHandlerPointer = waitHandleNull.SafeWaitHandle.DangerousGetHandle()
                     },
-                    new DSBPositionNotify
+                    new NotificationPosition
                     {
                         Offset = (int) _source.WaveFormat.MillisecondsToBytes(_latency),
-                        EventNotifyHandle = waitHandle0.SafeWaitHandle.DangerousGetHandle()
+                        EventNotifyHandlerPointer = waitHandle0.SafeWaitHandle.DangerousGetHandle()
                     },
-                    new DSBPositionNotify
+                    new NotificationPosition
                     {
-                        Offset = DSBPositionNotify.OffsetStop,
-                        EventNotifyHandle = waitHandleEnd.SafeWaitHandle.DangerousGetHandle()
+                        Offset = NotificationPosition.OffsetStop,
+                        EventNotifyHandlerPointer = waitHandleEnd.SafeWaitHandle.DangerousGetHandle()
                     }
                 };
                 _directSoundNotify.SetNotificationPositions(positionNotifies.Length,positionNotifies);
@@ -414,7 +440,7 @@ namespace CSCore.SoundOut
                 //002
                 _secondaryBuffer.SetCurrentPosition(0);
 
-                _secondaryBuffer.Play(DirectSoundPlayFlags.Looping); //default flags: looping
+                _secondaryBuffer.Play(PlayFlags.Looping); //default flags: looping
 
                 _playbackState = PlaybackState.Playing;
 
@@ -484,7 +510,7 @@ namespace CSCore.SoundOut
         {
             int read;
 
-            if (_secondaryBuffer.IsBufferLost())
+            if (_secondaryBuffer.IsBufferLost)
                 _secondaryBuffer.Restore();
 
             if (_playbackState == PlaybackState.Paused)
@@ -501,7 +527,10 @@ namespace CSCore.SoundOut
             }
 
             if (read > 0)
-                return _secondaryBuffer.Write(buffer, sampleOffset, bufferSize);
+            {
+                _secondaryBuffer.Write(buffer, sampleOffset, LockFlags.None);
+                return true;
+            }
             return false;
         }
 
