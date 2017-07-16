@@ -323,11 +323,13 @@ namespace CSCore.SoundOut
               AlgorithmFor3D = Guid.Empty
           };
 
+       
+
         private void InitializeInternal()
         {
             _directSound = new DirectSound();
 
-            _directSound.SetCooperativeLevel(IntPtr.Zero, CooperativeLevel.Normal); //use normal as default
+            _directSound.SetCooperativeLevel(Win32.NativeMethods.GetDesktopWindow(), CooperativeLevel.Normal); //use normal as default
             if (!_directSound.SupportsFormat(_source.WaveFormat))
             {
                 if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat) //directsound does not support ieeefloat
@@ -373,10 +375,14 @@ namespace CSCore.SoundOut
                 AlgorithmFor3D = Guid.Empty
             };
 
-            secondaryBufferDesc.Size = Marshal.SizeOf(secondaryBufferDesc);
-            GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
-            secondaryBufferDesc.pFormat = hWaveFormat.AddrOfPinnedObject();
-
+            secondaryBufferDesc.Format = SharpDX.Multimedia.WaveFormat.CreateCustomFormat(
+                (SharpDX.Multimedia.WaveFormatEncoding)(short)waveFormat.WaveFormatTag,
+                waveFormat.SampleRate,
+                waveFormat.Channels,
+                waveFormat.BytesPerSecond,
+                waveFormat.BlockAlign,
+                waveFormat.BitsPerSample
+                );
             _directSound.CreateSoundBuffer(secondaryBufferDesc,out dsBufferOut, null);
             _secondaryBuffer = new SoundBuffer(dsBufferOut);
         }

@@ -32,5 +32,8 @@ namespace CSCore.Win32
 
         [DllImport("ole32.dll")]
         public static extern int PropVariantClear(ref PropertyVariant propertyVariant);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDesktopWindow();
     }
 }

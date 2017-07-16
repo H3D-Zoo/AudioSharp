@@ -48,7 +48,6 @@
     <Compile Include="AvioContext.cs" />
     <Compile Include="AvStream.cs" />
     <Compile Include="FfmpegCalls.cs" />
-    <Compile Include="FfmpegConfigurationSection.cs" />
     <Compile Include="FfmpegDecoder.cs" />
     <Compile Include="FfmpegException.cs" />
     <Compile Include="FfmpegLogReceivedEventArgs.cs" />
