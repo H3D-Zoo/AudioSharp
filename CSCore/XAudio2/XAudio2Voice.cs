@@ -790,9 +790,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="destinationChannels">Confirms the input channel count of the destination voice.</param>
         /// <param name="levelMatrix">
-        ///     Array of [SourceChannels × DestinationChannels] volume levels sent to the destination voice.
-        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ×
-        ///     D + S].
+        ///     Array of [SourceChannels ?DestinationChannels] volume levels sent to the destination voice.
+        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ?        ///     D + S].
         ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.ixaudio2voice.ixaudio2voice.setoutputmatrix(v=vs.85).aspx.
         /// </param>
@@ -827,9 +826,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="destinationChannels">Confirms the input channel count of the destination voice.</param>
         /// <param name="levelMatrix">
-        ///     Array of [SourceChannels × DestinationChannels] volume levels sent to the destination voice.
-        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ×
-        ///     D + S].
+        ///     Array of [SourceChannels ?DestinationChannels] volume levels sent to the destination voice.
+        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ?        ///     D + S].
         ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.ixaudio2voice.ixaudio2voice.setoutputmatrix(v=vs.85).aspx.
         /// </param>
@@ -860,9 +858,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="destinationChannels">Confirms the input channel count of the destination voice.</param>
         /// <param name="levelMatrix">
-        ///     Array of [SourceChannels × DestinationChannels] volume levels sent to the destination voice.
-        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ×
-        ///     D + S].
+        ///     Array of [SourceChannels ?DestinationChannels] volume levels sent to the destination voice.
+        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ?        ///     D + S].
         ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.ixaudio2voice.ixaudio2voice.setoutputmatrix(v=vs.85).aspx.
         /// </param>
@@ -883,9 +880,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="destinationChannels">Confirms the input channel count of the destination voice.</param>
         /// <param name="levelMatrix">
-        ///     Array of [SourceChannels × DestinationChannels] volume levels sent to the destination voice.
-        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ×
-        ///     D + S].
+        ///     Array of [SourceChannels ?DestinationChannels] volume levels sent to the destination voice.
+        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ?        ///     D + S].
         ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.ixaudio2voice.ixaudio2voice.getoutputmatrix(v=vs.85).aspx.
         /// </param>
@@ -912,9 +908,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="destinationChannels">Confirms the input channel count of the destination voice.</param>
         /// <param name="levelMatrix">
-        ///     Array of [SourceChannels × DestinationChannels] volume levels sent to the destination voice.
-        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ×
-        ///     D + S].
+        ///     Array of [SourceChannels ?DestinationChannels] volume levels sent to the destination voice.
+        ///     The level sent from source channel S to destination channel D is specified in the form levelMatrix[SourceChannels ?        ///     D + S].
         ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.ixaudio2voice.ixaudio2voice.getoutputmatrix(v=vs.85).aspx.
         /// </param>

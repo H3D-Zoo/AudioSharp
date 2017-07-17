@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,14 +59,10 @@
     <Compile Include="Interops\ConstCharPtrMarshaler.cs" />
     <Compile Include="Interops\FFmpeg.avcodec.g.cs" />
     <Compile Include="ResolveFfmpegAssemblyLocationEventArgs.cs" />
-    <None Include="Interops\unused\FFmpeg.avdevice.g.cs" />
-    <None Include="Interops\unused\FFmpeg.avfilter.g.cs" />
     <Compile Include="Interops\FFmpeg.avformat.g.cs" />
     <Compile Include="Interops\FFmpeg.avutil.g.cs" />
     <Compile Include="Interops\ffmpeg.extend.cs" />
-    <None Include="Interops\unused\FFmpeg.postprocess.g.cs" />
     <Compile Include="Interops\FFmpeg.swresample.g.cs" />
-    <None Include="Interops\unused\FFmpeg.swscale.g.cs" />
     <Compile Include="Interops\InteropHelper.cs" />
     <Compile Include="Interops\Unresolved.cs" />
     <Compile Include="LogLevel.cs" />
@@ -132,7 +129,6 @@
     <Content Include="FFmpeg\bin\windows\x86\swresample-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Interops\unused\Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

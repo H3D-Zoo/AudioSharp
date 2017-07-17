@@ -45,9 +45,9 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(12, 39);
+            this.btnOpen.Location = new System.Drawing.Point(12, 36);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
+            this.btnOpen.Size = new System.Drawing.Size(75, 21);
             this.btnOpen.TabIndex = 0;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
@@ -56,9 +56,9 @@
             // btnPlay
             // 
             this.btnPlay.Enabled = false;
-            this.btnPlay.Location = new System.Drawing.Point(93, 39);
+            this.btnPlay.Location = new System.Drawing.Point(93, 36);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(75, 23);
+            this.btnPlay.Size = new System.Drawing.Size(75, 21);
             this.btnPlay.TabIndex = 1;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -67,9 +67,9 @@
             // btnPause
             // 
             this.btnPause.Enabled = false;
-            this.btnPause.Location = new System.Drawing.Point(174, 39);
+            this.btnPause.Location = new System.Drawing.Point(174, 36);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(75, 23);
+            this.btnPause.Size = new System.Drawing.Size(75, 21);
             this.btnPause.TabIndex = 2;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -78,9 +78,9 @@
             // btnStop
             // 
             this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(255, 39);
+            this.btnStop.Location = new System.Drawing.Point(255, 36);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.Size = new System.Drawing.Size(75, 21);
             this.btnStop.TabIndex = 3;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -91,10 +91,10 @@
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
-            this.trackBar1.Location = new System.Drawing.Point(12, 69);
+            this.trackBar1.Location = new System.Drawing.Point(12, 64);
             this.trackBar1.Maximum = 1000;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(545, 20);
+            this.trackBar1.Size = new System.Drawing.Size(545, 18);
             this.trackBar1.TabIndex = 4;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
@@ -108,32 +108,32 @@
             // 
             // lblPosition
             // 
-            this.lblPosition.Location = new System.Drawing.Point(12, 96);
+            this.lblPosition.Location = new System.Drawing.Point(12, 89);
             this.lblPosition.Name = "lblPosition";
-            this.lblPosition.Size = new System.Drawing.Size(100, 23);
+            this.lblPosition.Size = new System.Drawing.Size(318, 21);
             this.lblPosition.TabIndex = 5;
             // 
             // comboBox1
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(93, 12);
+            this.comboBox1.Location = new System.Drawing.Point(93, 11);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(237, 21);
+            this.comboBox1.Size = new System.Drawing.Size(237, 20);
             this.comboBox1.TabIndex = 6;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 19);
+            this.label1.Location = new System.Drawing.Point(12, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.Size = new System.Drawing.Size(47, 12);
             this.label1.TabIndex = 7;
             this.label1.Text = "Device:";
             // 
             // trackbarVolume
             // 
-            this.trackbarVolume.Location = new System.Drawing.Point(337, 16);
+            this.trackbarVolume.Location = new System.Drawing.Point(337, 15);
             this.trackbarVolume.Maximum = 100;
             this.trackbarVolume.Name = "trackbarVolume";
             this.trackbarVolume.Size = new System.Drawing.Size(220, 45);
@@ -143,9 +143,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 136);
+            this.ClientSize = new System.Drawing.Size(570, 126);
             this.Controls.Add(this.trackbarVolume);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);

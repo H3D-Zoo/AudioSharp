@@ -4,12 +4,13 @@ using CSCore;
 using CSCore.Codecs;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
+using CSCore.Ffmpeg;
 
 namespace AudioPlayerSample
 {
     public class MusicPlayer : Component
     {
-        private ISoundOut _soundOut;
+        private WaveOut _soundOut;
         private IWaveSource _waveSource;
 
 		public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
@@ -36,6 +37,16 @@ namespace AudioPlayerSample
             {
                 if (_waveSource != null)
                     _waveSource.SetPosition(value);
+            }
+        }
+
+        public TimeSpan PlayerPostion
+        {
+            get
+            {
+                if (_soundOut != null)
+                    return Extensions.GetTime(_waveSource,_soundOut.Position);
+                return TimeSpan.Zero;
             }
         }
 
@@ -66,16 +77,16 @@ namespace AudioPlayerSample
             }
         }
 
-        public void Open(string filename, MMDevice device)
+        public void Open(string filename, WaveOutDevice device)
         {
             CleanupPlayback();
 
             _waveSource =
-                CodecFactory.Instance.GetCodec(filename)
+                new FfmpegDecoder(filename)
                     .ToSampleSource()
                     .ToMono()
                     .ToWaveSource();
-            _soundOut = new WasapiOut() {Latency = 100, Device = device};
+            _soundOut = new WaveOut() {Latency = 100, Device = device};
             _soundOut.Initialize(_waveSource);
 			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }

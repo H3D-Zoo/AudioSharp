@@ -14,8 +14,8 @@ namespace AudioPlayerSample
     {
         private readonly MusicPlayer _musicPlayer = new MusicPlayer();
         private bool _stopSliderUpdate;
-        private readonly ObservableCollection<MMDevice> _devices = new ObservableCollection<MMDevice>(); 
-        
+        private readonly ObservableCollection<WaveOutDevice> _devices = new ObservableCollection<WaveOutDevice>();
+
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +25,7 @@ namespace AudioPlayerSample
             {
                 //WasapiOut uses SynchronizationContext.Post to raise the event
                 //There might be already a new WasapiOut-instance in the background when the async Post method brings the PlaybackStopped-Event to us.
-                if(_musicPlayer.PlaybackState != PlaybackState.Stopped)
+                if (_musicPlayer.PlaybackState != PlaybackState.Stopped)
                     btnPlay.Enabled = btnStop.Enabled = btnPause.Enabled = false;
             };
         }
@@ -40,7 +40,7 @@ namespace AudioPlayerSample
             {
                 try
                 {
-                    _musicPlayer.Open(openFileDialog.FileName, (MMDevice)comboBox1.SelectedItem);
+                    _musicPlayer.Open(openFileDialog.FileName, (WaveOutDevice)comboBox1.SelectedItem);
                     trackbarVolume.Value = _musicPlayer.Volume;
 
                     btnPlay.Enabled = true;
@@ -55,7 +55,7 @@ namespace AudioPlayerSample
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if(_musicPlayer.PlaybackState != PlaybackState.Playing)
+            if (_musicPlayer.PlaybackState != PlaybackState.Playing)
             {
                 _musicPlayer.Play();
                 btnPlay.Enabled = false;
@@ -65,7 +65,7 @@ namespace AudioPlayerSample
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if(_musicPlayer.PlaybackState == PlaybackState.Playing)
+            if (_musicPlayer.PlaybackState == PlaybackState.Playing)
             {
                 _musicPlayer.Pause();
                 btnPause.Enabled = false;
@@ -75,7 +75,7 @@ namespace AudioPlayerSample
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if(_musicPlayer.PlaybackState != PlaybackState.Stopped)
+            if (_musicPlayer.PlaybackState != PlaybackState.Stopped)
             {
                 _musicPlayer.Stop();
                 btnPlay.Enabled = btnStop.Enabled = btnPause.Enabled = false;
@@ -89,7 +89,7 @@ namespace AudioPlayerSample
             if (position > length)
                 length = position;
 
-            lblPosition.Text = String.Format(@"{0:mm\:ss} / {1:mm\:ss}", position, length);
+            lblPosition.Text = String.Format(@"{0:mm\:ss\:ff}({2:ff}) / {1:mm\:ss\:ff}", position, length,_musicPlayer.PlayerPostion);
 
             if (!_stopSliderUpdate &&
                 length != TimeSpan.Zero && position != TimeSpan.Zero)
@@ -123,20 +123,15 @@ namespace AudioPlayerSample
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            using (var mmdeviceEnumerator = new MMDeviceEnumerator())
+            var mmdeviceEnumerator = WaveOutDevice.EnumerateDevices();
+
+            foreach (var device in mmdeviceEnumerator)
             {
-                using (
-                    var mmdeviceCollection = mmdeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active))
-                {
-                    foreach (var device in mmdeviceCollection)
-                    {
-                        _devices.Add(device);
-                    }
-                }
+                _devices.Add(device);
             }
 
             comboBox1.DataSource = _devices;
-            comboBox1.DisplayMember = "FriendlyName";
+            comboBox1.DisplayMember = "Name";
             comboBox1.ValueMember = "DeviceID";
         }
 

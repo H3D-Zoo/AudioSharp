@@ -6,6 +6,7 @@ using System.Threading;
 using CSCore.DSP;
 using CSCore.SoundOut.MMInterop;
 using CSCore.Streams;
+using System.Runtime.InteropServices;
 
 namespace CSCore.SoundOut
 {
@@ -251,6 +252,26 @@ namespace CSCore.SoundOut
         {
             get { return _source; }
         }
+
+        public long Position
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    if (_waveOutHandle == IntPtr.Zero)
+                        return 0;
+                    else
+                    {
+                        MmTime mmTime = new MmTime();
+                        mmTime.wType = MmTime.TIME_MS;
+                        NativeMethods.waveOutGetPosition(_waveOutHandle, out mmTime, (uint)Marshal.SizeOf(mmTime));
+                        return mmTime.ms;
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         ///     Gets the current <see cref="SoundOut.PlaybackState" /> of the playback.

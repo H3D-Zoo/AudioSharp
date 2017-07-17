@@ -11,6 +11,7 @@ using CSCore.Streams;
 using CSCore.Streams.Effects;
 using CSCore.CoreAudioAPI;
 using WinformsVisualization.Visualization;
+using CSCore.Ffmpeg;
 
 namespace WinformsVisualization
 {
@@ -43,14 +44,14 @@ namespace WinformsVisualization
                 Stop();
                 
                 //open the selected file
-                ISampleSource source = CodecFactory.Instance.GetCodec(openFileDialog.FileName)
+                ISampleSource source =new FfmpegDecoder(openFileDialog.FileName)
                     .ToSampleSource()
                     .AppendSource(x => new PitchShifter(x), out _pitchShifter);
 
                 SetupSampleSource(source);
 
                 //play the audio
-                _soundOut = new WasapiOut();
+                _soundOut = new WaveOut();
                 _soundOut.Initialize(_source);
                 _soundOut.Play();
 

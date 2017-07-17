@@ -46,6 +46,24 @@ namespace CSCore.Ffmpeg
                     throw new PlatformNotSupportedException();
             }
 
+            try
+            {
+                //mono Unity Assembly.GetEntryAssembly() throw Excetpion
+                var assemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                if (assemblyDirectory != null)
+                {
+                    string path = Path.Combine(
+                        assemblyDirectory,
+                        Path.Combine("FFmpeg", Path.Combine("bin",
+                            Path.Combine(platform, IntPtr.Size == 8 ? "x64" : "x86"))));
+
+                    InteropHelper.RegisterLibrariesSearchPath(path);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
             FfmpegUtils.LogLevel = LogLevel.Debug;
 
             ffmpeg.av_register_all();

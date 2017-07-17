@@ -79,6 +79,10 @@ namespace CSCore.SoundOut.MMInterop
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutGetPlaybackRate(IntPtr hWaveOut, IntPtr pdwRate);
 
+
+        // http://msdn.microsoft.com/en-us/library/dd743863%28VS.85%29.aspx
+        [DllImport("winmm.dll")]
+        public static extern MmResult waveOutGetPosition(IntPtr hWaveOut, out MmTime mmTime, uint uSize);
         #endregion WaveOut
 
         #region waveIn
