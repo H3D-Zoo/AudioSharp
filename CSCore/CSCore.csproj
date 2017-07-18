@@ -680,7 +680,7 @@
       set target=$(TargetPath)
       set project=$(ProjectPath)
 
-      set sharpcli=$(SolutionDir)Tools\SharpCli\bin\$(ConfigurationName)\SharpCli.exe
+      set sharpcli=$(SolutionDir)bin\SharpCli.exe
 
       echo.
       echo.
