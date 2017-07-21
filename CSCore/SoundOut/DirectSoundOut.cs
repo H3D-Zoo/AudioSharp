@@ -421,17 +421,17 @@ namespace CSCore.SoundOut
                     new NotificationPosition
                     {
                         Offset = NotificationPosition.OffsetZero,
-                        EventNotifyHandlerPointer = waitHandleNull.SafeWaitHandle.DangerousGetHandle()
+                        WaitHandle = waitHandleNull
                     },
                     new NotificationPosition
                     {
                         Offset = (int) _source.WaveFormat.MillisecondsToBytes(_latency),
-                        EventNotifyHandlerPointer = waitHandle0.SafeWaitHandle.DangerousGetHandle()
+                        WaitHandle = waitHandle0
                     },
                     new NotificationPosition
                     {
                         Offset = NotificationPosition.OffsetStop,
-                        EventNotifyHandlerPointer = waitHandleEnd.SafeWaitHandle.DangerousGetHandle()
+                        WaitHandle = waitHandleEnd
                     }
                 };
                 _directSoundNotify.SetNotificationPositions(positionNotifies.Length,positionNotifies);
@@ -534,7 +534,7 @@ namespace CSCore.SoundOut
 
             if (read > 0)
             {
-                _secondaryBuffer.Write(buffer, sampleOffset, LockFlags.None);
+                _secondaryBuffer.Write(buffer,0, bufferSize, sampleOffset, LockFlags.None);
                 return true;
             }
             return false;
@@ -555,25 +555,25 @@ namespace CSCore.SoundOut
         {
             if (_directSoundNotify != null)
             {
-                //_directSoundNotify.Dispose();
+                _directSoundNotify.Dispose();
                 _directSoundNotify = null;
             }
             if (_secondaryBuffer != null)
             {
                 _secondaryBuffer.Stop();
-                //_secondaryBuffer.Dispose();
+                _secondaryBuffer.Dispose();
                 _secondaryBuffer = null;
             }
             if (_primaryBuffer != null)
             {
                 _primaryBuffer.Stop();
-                //_primaryBuffer.Dispose();
+                _primaryBuffer.Dispose();
                 _primaryBuffer = null;
             }
 
             if (_directSound != null)
             {
-                //_directSound.Dispose();
+                _directSound.Dispose();
                 _directSound = null;
             }
 

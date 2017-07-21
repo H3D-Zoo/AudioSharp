@@ -61,7 +61,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* pbuffer = &buffer, pmaxlength = &maxLength, pcurrentlength = &currentLength)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pbuffer, pmaxlength, pcurrentlength, ((void**)(*(void**)UnsafeBasePtr))[3]);
+                return LocalInterop.Calliint(UnsafeBasePtr, pbuffer, pmaxlength, pcurrentlength, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -112,7 +112,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int UnlockNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[4]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[4]);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &currentLength)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -157,7 +157,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetCurrentLengthNative(int currentLength)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, currentLength, ((void**)(*(void**)UnsafeBasePtr))[6]);
+            return LocalInterop.Calliint(UnsafeBasePtr, currentLength, ((void**)(*(void**)UnsafeBasePtr))[6]);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &maxlength)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[7]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[7]);
             }
         }
 

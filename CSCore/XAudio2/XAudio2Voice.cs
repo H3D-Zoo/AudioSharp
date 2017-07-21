@@ -91,13 +91,13 @@ namespace CSCore.XAudio2
             if (_version == XAudio2Version.XAudio2_7)
             {
                 var t = new VoiceDetails.VoiceDetails27();
-                result = InteropCalls.CallI(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
+                result = InteropCall.ABCDE(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
                 voiceDetails = VoiceDetails.FromNativeVoiceDetailsObject(t);
             }
             else if (_version == XAudio2Version.XAudio2_8)
             {
                 var t = new VoiceDetails.VoiceDetails28();
-                result = InteropCalls.CallI(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
+                result = InteropCall.ABCDE(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
                 voiceDetails = VoiceDetails.FromNativeVoiceDetailsObject(t);
             }
             else
@@ -122,7 +122,7 @@ namespace CSCore.XAudio2
             if (voiceSends.HasValue)
                 value = voiceSends.Value;
 
-            return InteropCalls.CallI(UnsafeBasePtr, voiceSends.HasValue ? &value : (void*) IntPtr.Zero,
+            return InteropCall.ABCDE(UnsafeBasePtr, voiceSends.HasValue ? &value : (void*) IntPtr.Zero,
                 ((void**) (*(void**) UnsafeBasePtr))[1]);
         }
 
@@ -172,7 +172,7 @@ namespace CSCore.XAudio2
                 ptr = &value;
             }
 
-            return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[2]);
+            return InteropCall.ABCDE(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[2]);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int EnableEffectNative(int effectIndex, int operationSet)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, effectIndex, operationSet, ((void**) (*(void**) UnsafeBasePtr))[3]);
+            return InteropCall.XCallI(UnsafeBasePtr, effectIndex, operationSet, ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int DisableEffectNative(int effectIndex, int operationSet)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, effectIndex, operationSet, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            return InteropCall.XCallI(UnsafeBasePtr, effectIndex, operationSet, ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace CSCore.XAudio2
         {
             fixed (void* p = &enabled)
             {
-                InteropCalls.CallI1(UnsafeBasePtr, effectIndex, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                InteropCall.CallI1(UnsafeBasePtr, effectIndex, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
@@ -317,7 +317,7 @@ namespace CSCore.XAudio2
         public unsafe int SetEffectParametersNative(int effectIndex, IntPtr effectParameters, int parametersByteSize,
             int operationSet)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, effectIndex, effectParameters, parametersByteSize, operationSet,
+            return InteropCall.XCallI(UnsafeBasePtr, effectIndex, effectParameters, parametersByteSize, operationSet,
                 ((void**) (*(void**) UnsafeBasePtr))[6]);
         }
 
@@ -362,7 +362,7 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int GetEffectParametersNative(int effectIndex, IntPtr effectParameters, int parametersByteSize)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, effectIndex, effectParameters.ToPointer(), parametersByteSize,
+            return InteropCall.XCallI(UnsafeBasePtr, effectIndex, effectParameters.ToPointer(), parametersByteSize,
                 ((void**) (*(void**) UnsafeBasePtr))[7]);
         }
 
@@ -397,7 +397,7 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int SetFilterParametersNative(FilterParameters filterParameters, int operationSet)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, &filterParameters, operationSet, ((void**) (*(void**) UnsafeBasePtr))[8]);
+            return InteropCall.XCallI(UnsafeBasePtr, &filterParameters, operationSet, ((void**) (*(void**) UnsafeBasePtr))[8]);
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace CSCore.XAudio2
             filterParameters = default(FilterParameters);
             fixed (void* p = &filterParameters)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                return InteropCall.ABCDE(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[9]);
             }
         }
 
@@ -462,7 +462,7 @@ namespace CSCore.XAudio2
             int operationSet)
         {
             IntPtr pVoice = destinationVoice == null ? IntPtr.Zero : destinationVoice.BasePtr;
-            return InteropCalls.CallI(UnsafeBasePtr, (void*) pVoice, &filterParameters, operationSet,
+            return InteropCall.XCallI(UnsafeBasePtr, (void*) pVoice, &filterParameters, operationSet,
                 ((void**) (*(void**) UnsafeBasePtr))[10]);
         }
 
@@ -515,7 +515,7 @@ namespace CSCore.XAudio2
             IntPtr pVoice = destinationVoice == null ? IntPtr.Zero : destinationVoice.BasePtr;
             fixed (void* p = &filterParameters)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, (void*) pVoice, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
+                return InteropCall.XCallI(UnsafeBasePtr, (void*) pVoice, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
             }
         }
 
@@ -553,7 +553,7 @@ namespace CSCore.XAudio2
         /// </remarks>
         public unsafe int SetVolumeNative(float volume, int operationSet)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, volume, operationSet, ((void**) (*(void**) UnsafeBasePtr))[12]);
+            return InteropCall.XCallI(UnsafeBasePtr, volume, operationSet, ((void**) (*(void**) UnsafeBasePtr))[12]);
         }
 
         /// <summary>
@@ -601,7 +601,7 @@ namespace CSCore.XAudio2
         {
             fixed (void* p = &volume)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[13]);
+                return InteropCall.ABCDE(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[13]);
             }
         }
 
@@ -654,7 +654,7 @@ namespace CSCore.XAudio2
         {
             fixed (void* p = &volumes[0])
             {
-                return InteropCalls.CallI(UnsafeBasePtr, channelCount, p, operationSet, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                return InteropCall.XCallI(UnsafeBasePtr, channelCount, p, operationSet, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
@@ -742,7 +742,7 @@ namespace CSCore.XAudio2
         {
             fixed (void* p = &volumes[0])
             {
-                return InteropCalls.CallI(UnsafeBasePtr, channelCount, p, ((void**) (*(void**) UnsafeBasePtr))[15]);
+                return InteropCall.XCallI(UnsafeBasePtr, channelCount, p, ((void**) (*(void**) UnsafeBasePtr))[15]);
             }
         }
 
@@ -806,7 +806,7 @@ namespace CSCore.XAudio2
             IntPtr pVoice = destinationVoice == null ? IntPtr.Zero : destinationVoice.BasePtr;
             fixed (void* p = &levelMatrix[0])
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pVoice.ToPointer(), sourceChannels, destinationChannels, p,
+                return InteropCall.XCallI(UnsafeBasePtr, pVoice.ToPointer(), sourceChannels, destinationChannels, p,
                     operationSet, ((void**) (*(void**) UnsafeBasePtr))[16]);
             }
         }
@@ -892,7 +892,7 @@ namespace CSCore.XAudio2
             IntPtr pVoice = destinationVoice == null ? IntPtr.Zero : destinationVoice.BasePtr;
             fixed (void* p = &levelMatrix[0])
             {
-                return InteropCalls.CallI(UnsafeBasePtr, (void*) pVoice, sourceChannels, destinationChannels, p,
+                return InteropCall.XCallI(UnsafeBasePtr, (void*) pVoice, sourceChannels, destinationChannels, p,
                     ((void**) (*(void**) UnsafeBasePtr))[17]);
             }
         }
@@ -925,7 +925,7 @@ namespace CSCore.XAudio2
         /// </summary>
         public unsafe void DestroyVoice()
         {
-            InteropCalls.CallI2(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[18]);
+            InteropCall.CallI2(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[18]);
         }
 
         private bool _disposed;

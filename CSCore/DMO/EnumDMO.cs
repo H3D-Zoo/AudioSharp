@@ -99,7 +99,7 @@ namespace CSCore.DMO
 
             fixed (void* p1 = &clsids[0], p2 = &pnames[0], p3 = &itemsFetched)
             {
-                result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, itemsToFetch, p1, p2, p3,
+                result = LocalInterop.CalliMethodPtr(UnsafeBasePtr, itemsToFetch, p1, p2, p3,
                     ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
 
@@ -152,7 +152,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SkipNative(int itemsToSkip)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, itemsToSkip, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, itemsToSkip, ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int ResetNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[5]);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace CSCore.DMO
         {
             fixed (void* p = &pEnum)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 

@@ -89,7 +89,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int SetMasterVolumeNative(float volume, Guid eventContext)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, volume, &eventContext, ((void**) (*(void**) UnsafeBasePtr))[3]);
+            return InteropCall.CallI(UnsafeBasePtr, volume, &eventContext, ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pvolume = &volume)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pvolume, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return InteropCall.CallI(UnsafeBasePtr, pvolume, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -115,7 +115,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int SetMuteNative(NativeBool muted, Guid eventContext)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, muted, &eventContext, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            return InteropCall.CallI(UnsafeBasePtr, muted, &eventContext, ((void**) (*(void**) UnsafeBasePtr))[5]);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pismuted = &isMuted)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pismuted, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return InteropCall.CallI(UnsafeBasePtr, pismuted, ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
     }

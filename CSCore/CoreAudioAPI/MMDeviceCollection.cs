@@ -59,7 +59,7 @@ namespace CSCore.CoreAudioAPI
             fixed (void* pdeviceCount = &deviceCount)
             {
                 deviceCount = 0;
-                return InteropCalls.CallI(UnsafeBasePtr, pdeviceCount, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return InteropCall.CallI(UnsafeBasePtr, pdeviceCount, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -86,7 +86,7 @@ namespace CSCore.CoreAudioAPI
             device = IntPtr.Zero;
             fixed (void* pdevice = &device)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, deviceIndex, pdevice, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return InteropCall.CallI(UnsafeBasePtr, deviceIndex, pdevice, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 

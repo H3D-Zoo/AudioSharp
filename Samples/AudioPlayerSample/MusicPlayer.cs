@@ -10,7 +10,7 @@ namespace AudioPlayerSample
 {
     public class MusicPlayer : Component
     {
-        private WaveOut _soundOut;
+        private DirectSoundOut _soundOut;
         private IWaveSource _waveSource;
 
 		public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
@@ -44,8 +44,6 @@ namespace AudioPlayerSample
         {
             get
             {
-                if (_soundOut != null)
-                    return Extensions.GetTime(_waveSource,_soundOut.Position);
                 return TimeSpan.Zero;
             }
         }
@@ -77,16 +75,13 @@ namespace AudioPlayerSample
             }
         }
 
-        public void Open(string filename, WaveOutDevice device)
+        public void Open(string filename)
         {
             CleanupPlayback();
 
             _waveSource =
-                new FfmpegDecoder(filename)
-                    .ToSampleSource()
-                    .ToMono()
-                    .ToWaveSource();
-            _soundOut = new WaveOut() {Latency = 100, Device = device};
+                new FfmpegDecoder(filename);
+            _soundOut = new DirectSoundOut() {Latency = 100};
             _soundOut.Initialize(_waveSource);
 			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }

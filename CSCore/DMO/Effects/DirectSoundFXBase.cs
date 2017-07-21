@@ -51,7 +51,7 @@ namespace CSCore.DMO.Effects
             try
             {
                 Marshal.StructureToPtr(parameters, p, true);
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, p.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
             finally
             {
@@ -71,7 +71,7 @@ namespace CSCore.DMO.Effects
             IntPtr p = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof (T)));
             try
             {
-                int hresult = InteropCalls.CalliMethodPtr(UnsafeBasePtr, p.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[4]);
+                int hresult = LocalInterop.CalliMethodPtr(UnsafeBasePtr, p.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[4]);
 
                 parameters = (T) Marshal.PtrToStructure(p, typeof (T));
                 return hresult;

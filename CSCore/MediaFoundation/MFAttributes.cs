@@ -93,7 +93,7 @@ namespace CSCore.MediaFoundation
         /// </remarks>
         public unsafe int GetItemNative(Guid key, IntPtr valueRef)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*) valueRef,
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, (void*) valueRef,
                 ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
 
@@ -127,7 +127,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (MFAttributeType* pat = &attributeType)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pat, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pat, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -165,7 +165,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (NativeBool* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, &value, pr,
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, &value, pr,
                     ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
@@ -202,7 +202,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (NativeBool* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr,
+                return LocalInterop.Calliint(UnsafeBasePtr,
                     (void*) ((theirs == null) ? IntPtr.Zero : theirs.BasePtr), matchType, pr,
                     ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
@@ -241,7 +241,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (int* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[7]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[7]);
             }
         }
 
@@ -280,7 +280,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (long* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[8]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[8]);
             }
         }
 
@@ -319,7 +319,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (double* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[9]);
             }
         }
 
@@ -358,7 +358,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (Guid* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[10]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[10]);
             }
         }
 
@@ -396,7 +396,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (int* pr = &result)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[11]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, pr, ((void**) (*(void**) UnsafeBasePtr))[11]);
             }
         }
 
@@ -434,7 +434,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int GetStringNative(Guid key, IntPtr wszValue, int cchBufSize, IntPtr cchLength)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*)wszValue, cchBufSize, &cchLength,
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, (void*)wszValue, cchBufSize, &cchLength,
                 ((void**) (*(void**) UnsafeBasePtr))[12]);
         }
 
@@ -480,7 +480,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (int* pcchl = (&cchLength))
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*) wszValue, (IntPtr*) pcchl,
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, (void*) wszValue, (IntPtr*) pcchl,
                     ((void**) (*(void**) UnsafeBasePtr))[13]);
             }
         }
@@ -495,7 +495,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (int* psize = &size)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, psize, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, psize, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
@@ -521,7 +521,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int GetBlobNative(Guid key, IntPtr bufferPtr, int cbBufSize, IntPtr cbBlobSize)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*) bufferPtr, cbBufSize, (void*) cbBlobSize,
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, (void*) bufferPtr, cbBufSize, (void*) cbBlobSize,
                 ((void**) (*(void**) UnsafeBasePtr))[15]);
         }
 
@@ -584,7 +584,7 @@ namespace CSCore.MediaFoundation
             fixed (void* ppcbsize = &pcbSize)
             {
                 IntPtr ptr = IntPtr.Zero;
-                int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, &ptr, ppcbsize,
+                int result = LocalInterop.Calliint(UnsafeBasePtr, &key, &ptr, ppcbsize,
                     ((void**) (*(void**) UnsafeBasePtr))[16]);
                 try
                 {
@@ -610,7 +610,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (IntPtr* ptr = &unknown)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, &riid, ptr,
+                return LocalInterop.Calliint(UnsafeBasePtr, &key, &riid, ptr,
                     ((void**) (*(void**) UnsafeBasePtr))[17]);
             }
         }
@@ -623,7 +623,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetItemNative(Guid key, PropertyVariant value)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[18]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[18]);
         }
 
         /// <summary>
@@ -643,7 +643,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int DeleteItemNative(Guid key)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, ((void**) (*(void**) UnsafeBasePtr))[19]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, ((void**) (*(void**) UnsafeBasePtr))[19]);
         }
 
         /// <summary>
@@ -661,7 +661,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int DeleteAllItemsNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[20]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[20]);
         }
 
         /// <summary>
@@ -680,7 +680,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetUINT32Native(Guid key, int value)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[21]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[21]);
         }
 
         /// <summary>
@@ -701,7 +701,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetUINT64Native(Guid key, long value)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[22]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[22]);
         }
 
         /// <summary>
@@ -722,7 +722,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetDoubleNative(Guid key, double value)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[23]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, value, ((void**) (*(void**) UnsafeBasePtr))[23]);
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetGuidNative(Guid key, Guid value)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[24]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[24]);
         }
 
         /// <summary>
@@ -766,7 +766,7 @@ namespace CSCore.MediaFoundation
         public unsafe int SetStringNative(Guid key, string value)
         {
             IntPtr intPtr = Marshal.StringToHGlobalUni(value);
-            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*) intPtr,
+            int result = LocalInterop.Calliint(UnsafeBasePtr, &key, (void*) intPtr,
                 ((void**) (*(void**) UnsafeBasePtr))[25]);
             Marshal.FreeHGlobal(intPtr);
             return result;
@@ -792,7 +792,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetBlobNative(Guid key, IntPtr buf, int cbBufSize)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, (void*) buf, cbBufSize,
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, (void*) buf, cbBufSize,
                 ((void**) (*(void**) UnsafeBasePtr))[26]);
         }
         /// <summary>
@@ -819,7 +819,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetUnknownNative(Guid key, IntPtr unknown)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &key, unknown, ((void**) (*(void**) UnsafeBasePtr))[27]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &key, unknown, ((void**) (*(void**) UnsafeBasePtr))[27]);
         }
 
         /// <summary>
@@ -828,7 +828,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int LockStoreNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[28]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[28]);
         }
 
         /// <summary>
@@ -845,7 +845,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int UnlockStoreNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[29]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[29]);
         }
 
         /// <summary>
@@ -866,7 +866,7 @@ namespace CSCore.MediaFoundation
             itemCount = -1;
             fixed (void* ptr = &itemCount)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[30]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[30]);
             }
         }
 
@@ -893,7 +893,7 @@ namespace CSCore.MediaFoundation
             key = default(Guid);
             fixed (void* ptr = &key)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, index, new IntPtr(ptr), (void*) value,
+                return LocalInterop.Calliint(UnsafeBasePtr, index, new IntPtr(ptr), (void*) value,
                     ((void**) (*(void**) UnsafeBasePtr))[31]);
             }
         }
@@ -927,7 +927,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int CopyAllItemsNative(MFAttributes destination)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr,
+            return LocalInterop.Calliint(UnsafeBasePtr,
                 (void*) ((destination == null) ? IntPtr.Zero : destination.BasePtr),
                 ((void**) (*(void**) UnsafeBasePtr))[32]);
         }

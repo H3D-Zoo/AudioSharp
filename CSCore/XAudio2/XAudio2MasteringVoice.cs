@@ -45,7 +45,7 @@ namespace CSCore.XAudio2
 
             fixed (void* p = &channelMask)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[19]);
+                return InteropCall.ABCDE(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[19]);
             }
         }
     }

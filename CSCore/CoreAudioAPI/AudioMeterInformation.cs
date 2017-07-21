@@ -97,7 +97,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &peak)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return InteropCall.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -125,7 +125,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &channelCount)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return InteropCall.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -163,7 +163,7 @@ namespace CSCore.CoreAudioAPI
             peakValues = new float[channelCount];
             fixed (void* ptr = &peakValues[0])
             {
-                return InteropCalls.CallI(UnsafeBasePtr, channelCount, ptr, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return InteropCall.CallI(UnsafeBasePtr, channelCount, ptr, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
@@ -215,7 +215,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &hardwareSupportMask)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return InteropCall.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 

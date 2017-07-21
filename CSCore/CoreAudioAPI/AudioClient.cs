@@ -160,7 +160,7 @@ namespace CSCore.CoreAudioAPI
             GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
             try
             {
-                return InteropCalls.CallI(UnsafeBasePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity,
+                return InteropCall.CallI(UnsafeBasePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity,
                     hWaveFormat.AddrOfPinnedObject().ToPointer(), audioSessionGuid,
                     ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
@@ -215,7 +215,7 @@ namespace CSCore.CoreAudioAPI
             long hnsBufferDuration, long hnsPeriodicity,
             IntPtr waveFormat, Guid audioSessionGuid)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity,
+            return InteropCall.CallI(UnsafeBasePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity,
                 waveFormat.ToPointer(), audioSessionGuid,
                 ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
@@ -280,7 +280,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pbfc = &bufferFramesCount)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pbfc, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return InteropCall.CallI(UnsafeBasePtr, pbfc, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -315,7 +315,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pl = &hnsLatency)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pl, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return InteropCall.CallI(UnsafeBasePtr, pl, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
@@ -349,7 +349,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pndf = &numPaddingFrames)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, pndf, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return InteropCall.CallI(UnsafeBasePtr, pndf, ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 
@@ -403,7 +403,7 @@ namespace CSCore.CoreAudioAPI
             int result;
             try
             {
-                result = InteropCalls.CallI(UnsafeBasePtr, shareMode, hWaveFormat.AddrOfPinnedObject().ToPointer(),
+                result = InteropCall.CallI(UnsafeBasePtr, shareMode, hWaveFormat.AddrOfPinnedObject().ToPointer(),
                     shareMode == AudioClientShareMode.Shared ? &pclosestMatch : IntPtr.Zero.ToPointer(),
                     ((void**) (*(void**) UnsafeBasePtr))[7]);
 
@@ -533,7 +533,7 @@ namespace CSCore.CoreAudioAPI
         {
             IntPtr pdeviceFormat = IntPtr.Zero;
             int result;
-            if ((result = InteropCalls.CallI(UnsafeBasePtr, &pdeviceFormat, ((void**) (*(void**) UnsafeBasePtr))[8])) ==
+            if ((result = InteropCall.CallI(UnsafeBasePtr, &pdeviceFormat, ((void**) (*(void**) UnsafeBasePtr))[8])) ==
                 0 && pdeviceFormat != IntPtr.Zero)
             {
                 try
@@ -595,7 +595,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ddp = &hnsDefaultDevicePeriod, mdp = &hnsMinimumDevicePeriod)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ddp, mdp, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                return InteropCall.CallI(UnsafeBasePtr, ddp, mdp, ((void**) (*(void**) UnsafeBasePtr))[9]);
             }
         }
 
@@ -609,7 +609,7 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public unsafe int StartNative()
         {
-            return InteropCalls.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[10]);
+            return InteropCall.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[10]);
         }
 
         /// <summary>
@@ -634,7 +634,7 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public unsafe int StopNative()
         {
-            return InteropCalls.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[11]);
+            return InteropCall.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[11]);
         }
 
         /// <summary>
@@ -659,7 +659,7 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public unsafe int ResetNative()
         {
-            return InteropCalls.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[12]);
+            return InteropCall.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[12]);
         }
 
         /// <summary>
@@ -688,7 +688,7 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public unsafe int SetEventHandleNative(IntPtr handle)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, handle.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[13]);
+            return InteropCall.CallI(UnsafeBasePtr, handle.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[13]);
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pppv = &ppv)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, &riid, pppv, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                return InteropCall.CallI(UnsafeBasePtr, &riid, pppv, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 

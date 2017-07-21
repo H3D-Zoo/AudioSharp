@@ -38,7 +38,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &sampleFlags)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -64,7 +64,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetSampleFlagsNative(MFSampleFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, flags, ((void**)(*(void**)UnsafeBasePtr))[34]);
+            return LocalInterop.Calliint(UnsafeBasePtr, flags, ((void**)(*(void**)UnsafeBasePtr))[34]);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &hnsSampleTime)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[35]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[35]);
             }
         }
 
@@ -109,7 +109,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetSampleTimeNative(long hnsSampleTime)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, hnsSampleTime, ((void**)(*(void**)UnsafeBasePtr))[36]);
+            return LocalInterop.Calliint(UnsafeBasePtr, hnsSampleTime, ((void**)(*(void**)UnsafeBasePtr))[36]);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &hnsSampleDuration)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[37]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[37]);
             }
         }
 
@@ -152,7 +152,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetSampleDurationNative(long hnsSampleDuration)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, hnsSampleDuration, ((void**)(*(void**)UnsafeBasePtr))[38]);
+            return LocalInterop.Calliint(UnsafeBasePtr, hnsSampleDuration, ((void**)(*(void**)UnsafeBasePtr))[38]);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &bufferCount)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[39]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[39]);
             }
         }
 
@@ -203,7 +203,7 @@ namespace CSCore.MediaFoundation
         public unsafe int GetBufferByIndexNative(int index, out MFMediaBuffer buffer)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, index, &ptr, ((void**)(*(void**)UnsafeBasePtr))[40]);
+            int result = LocalInterop.Calliint(UnsafeBasePtr, index, &ptr, ((void**)(*(void**)UnsafeBasePtr))[40]);
             buffer = ptr == IntPtr.Zero ? null : new MFMediaBuffer(ptr);
             return result;
         }
@@ -233,7 +233,7 @@ namespace CSCore.MediaFoundation
         public unsafe int ConvertToContiguousBufferNative(out MFMediaBuffer buffer)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[41]);
+            int result = LocalInterop.Calliint(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[41]);
             buffer = ptr == IntPtr.Zero ? null : new MFMediaBuffer(ptr);
             return result;
         }
@@ -256,7 +256,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int AddBufferNative(MFMediaBuffer buffer)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[42]);
+            return LocalInterop.Calliint(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[42]);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int RemoveBufferByIndexNative(int index)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, index, ((void**)(*(void**)UnsafeBasePtr))[43]);
+            return LocalInterop.Calliint(UnsafeBasePtr, index, ((void**)(*(void**)UnsafeBasePtr))[43]);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int RemoveAllBuffersNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[44]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[44]);
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &totalLength)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[45]);
+                return LocalInterop.Calliint(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[45]);
             }
         }
 
@@ -337,7 +337,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int CopyToBufferNative(MFMediaBuffer buffer)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[46]);
+            return LocalInterop.Calliint(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[46]);
         }
 
         /// <summary>

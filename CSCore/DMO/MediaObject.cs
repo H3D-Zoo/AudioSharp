@@ -74,7 +74,7 @@ namespace CSCore.DMO
             inputStreams = outputStreams = 0;
             fixed (void* i0 = &inputStreams, i1 = &outputStreams)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, i0, i1, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, i0, i1, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -101,7 +101,7 @@ namespace CSCore.DMO
             flags = DmoInputStreamInfoFlags.None;
             fixed (void* p = &flags)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -130,7 +130,7 @@ namespace CSCore.DMO
             flags = DmoOutputStreamInfoFlags.None;
             fixed (void* p = &flags)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
@@ -166,7 +166,7 @@ namespace CSCore.DMO
             if (mediaType != null)
                 ptr = &mt;
 
-            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, typeIndex, ptr,
+            int result = LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, typeIndex, ptr,
                 ((void**) (*(void**) UnsafeBasePtr))[6]);
 
             if (mediaType != null)
@@ -209,7 +209,7 @@ namespace CSCore.DMO
             if (mediaType != null)
                 ptr = &mt;
 
-            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, typeIndex, ptr,
+            int result = LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, typeIndex, ptr,
                 ((void**) (*(void**) UnsafeBasePtr))[7]);
 
             if (mediaType != null)
@@ -243,7 +243,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SetInputTypeNative(int inputStreamIndex, MediaType mediaType, SetTypeFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr,
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr,
                 inputStreamIndex, &mediaType, flags, ((void**) (*(void**) UnsafeBasePtr))[8]);
         }
 
@@ -254,7 +254,7 @@ namespace CSCore.DMO
         public unsafe void ClearInputType(int inputStreamIndex)
         {
             DmoException.Try(
-                InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
+                LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
                     ((void**) (*(void**) UnsafeBasePtr))[8]), n, "SetInputType");
         }
 
@@ -341,7 +341,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SetOutputTypeNative(int outputStreamIndex, MediaType mediaType, SetTypeFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, &mediaType, flags,
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, &mediaType, flags,
                 ((void**) (*(void**) UnsafeBasePtr))[9]);
         }
 
@@ -352,7 +352,7 @@ namespace CSCore.DMO
         public unsafe void ClearOutputType(int outputStreamIndex)
         {
             DmoException.Try(
-                InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
+                LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
                     ((void**) (*(void**) UnsafeBasePtr))[9]), n, "SetOutputType");
         }
 
@@ -442,7 +442,7 @@ namespace CSCore.DMO
         {
             fixed (void* p = &mediaType)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[10]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[10]);
             }
         }
 
@@ -470,7 +470,7 @@ namespace CSCore.DMO
         {
             fixed (void* p = &mediaType)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
             }
         }
 
@@ -507,7 +507,7 @@ namespace CSCore.DMO
         {
             fixed (void* p0 = &minSize, p1 = &maxLookahead, p2 = &alignment)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p0, p1, p2,
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p0, p1, p2,
                     ((void**) (*(void**) UnsafeBasePtr))[12]);
             }
         }
@@ -540,7 +540,7 @@ namespace CSCore.DMO
         {
             fixed (void* p0 = &minSize, p2 = &alignment)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p0, p2,
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p0, p2,
                     ((void**) (*(void**) UnsafeBasePtr))[13]);
             }
         }
@@ -569,7 +569,7 @@ namespace CSCore.DMO
         {
             fixed (void* p = &maxLatency)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
@@ -596,7 +596,7 @@ namespace CSCore.DMO
         /// <remarks>For the definition of maximum latency, see <see href="https://msdn.microsoft.com/en-us/Library/dd406948(v=vs.85).aspx"/>.</remarks>
         public unsafe int SetInputMaxLatencyNative(int inputStreamIndex, long maxLatency)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, maxLatency,
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, maxLatency,
                 ((void**) (*(void**) UnsafeBasePtr))[15]);
         }
 
@@ -620,7 +620,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int FlushNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[16]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[16]);
         }
 
         /// <summary>
@@ -644,7 +644,7 @@ namespace CSCore.DMO
         /// This method might fail if it is called before the client sets the input and output types on the DMO.</remarks>
         public unsafe int DiscontinuityNative(int inputStreamIndex)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, ((void**) (*(void**) UnsafeBasePtr))[17]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, ((void**) (*(void**) UnsafeBasePtr))[17]);
         }
 
         /// <summary>
@@ -672,7 +672,7 @@ namespace CSCore.DMO
         /// </remarks>
         public unsafe int AllocateStreamingResourcesNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[18]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[18]);
         }
 
         /// <summary>
@@ -698,7 +698,7 @@ namespace CSCore.DMO
         /// </remarks>
         public unsafe int FreeStreamingResourcesNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[19]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[19]);
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace CSCore.DMO
         {
             fixed (void* pflags = &flags)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, pflags,
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, pflags,
                     ((void**) (*(void**) UnsafeBasePtr))[20]);
             }
         }
@@ -825,7 +825,7 @@ namespace CSCore.DMO
         public unsafe int ProcessInputNative(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags,
             long timestamp, long timeduration)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, mediaBuffer, flags, timestamp, timeduration,
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, mediaBuffer, flags, timestamp, timeduration,
                 ((void**) (*(void**) UnsafeBasePtr))[21]);
         }
 
@@ -870,7 +870,7 @@ namespace CSCore.DMO
         {
             fixed (void* pstatus = &status)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, flags, bufferCount, buffers, pstatus,
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, flags, bufferCount, buffers, pstatus,
                     ((void**) (*(void**) UnsafeBasePtr))[22]);
             }
         }
@@ -888,7 +888,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int LockNative(long bLock)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, bLock, ((void**) (*(void**) UnsafeBasePtr))[23]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, bLock, ((void**) (*(void**) UnsafeBasePtr))[23]);
         }
 
         /// <summary>

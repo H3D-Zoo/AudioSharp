@@ -73,7 +73,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &capabilities)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.Calliint(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -87,7 +87,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &length)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return LocalInterop.Calliint(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -99,7 +99,7 @@ namespace CSCore.MediaFoundation
         /// <remarks>Use the <see cref="Length"/> property for easier usage with automated error handling.</remarks>        
         public unsafe int SetLengthNative(long length)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, length, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            return LocalInterop.Calliint(UnsafeBasePtr, length, ((void**) (*(void**) UnsafeBasePtr))[5]);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &position)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return LocalInterop.Calliint(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 
@@ -122,7 +122,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetCurrentPositionNative(long position)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, position, ((void**) (*(void**) UnsafeBasePtr))[7]);
+            return LocalInterop.Calliint(UnsafeBasePtr, position, ((void**) (*(void**) UnsafeBasePtr))[7]);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &isEndOfStream)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[8]);
+                return LocalInterop.Calliint(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[8]);
             }
         }
 
@@ -176,7 +176,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* pRead = &read)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*) buffer, count, pRead,
+                return LocalInterop.Calliint(UnsafeBasePtr, (void*) buffer, count, pRead,
                     ((void**) (*(void**) UnsafeBasePtr))[9]);
             }
         }
@@ -220,7 +220,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int BeginReadNative(IntPtr buffer, int count, IntPtr callback, IntPtr unkState)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, buffer, count, callback, unkState,
+            return LocalInterop.Calliint(UnsafeBasePtr, buffer, count, callback, unkState,
                 ((void**) (*(void**) UnsafeBasePtr))[10]);
         }
 
@@ -234,7 +234,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &read)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, result, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
+                return LocalInterop.Calliint(UnsafeBasePtr, result, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
             }
         }
         //TODO: Provide a better implementation for the BeginRead/EndRead methods
@@ -250,7 +250,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &written)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*) buffer, count, p,
+                return LocalInterop.Calliint(UnsafeBasePtr, (void*) buffer, count, p,
                     ((void**) (*(void**) UnsafeBasePtr))[12]);
             }
         }
@@ -292,7 +292,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int BeginWriteNative(IntPtr buffer, int count, IntPtr callback, IntPtr unkState)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, buffer, count, callback, unkState,
+            return LocalInterop.Calliint(UnsafeBasePtr, buffer, count, callback, unkState,
                 ((void**)(*(void**)UnsafeBasePtr))[13]);
         }
 
@@ -306,7 +306,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* p = &written)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, result, p, ((void**)(*(void**)UnsafeBasePtr))[14]);
+                return LocalInterop.Calliint(UnsafeBasePtr, result, p, ((void**)(*(void**)UnsafeBasePtr))[14]);
             }
         }
         //TODO: Provide a better implementation for the BeginWrite/EndWrite methods
@@ -328,7 +328,7 @@ namespace CSCore.MediaFoundation
 
             fixed (void* p = &currentPosition)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (int) seekOrigin, seekOffset, flags, p,
+                return LocalInterop.Calliint(UnsafeBasePtr, (int) seekOrigin, seekOffset, flags, p,
                     ((void**) (*(void**) UnsafeBasePtr))[15]);
             }
         }
@@ -354,7 +354,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int FlushNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[16]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[16]);
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int CloseNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[17]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[17]);
         }
 
         /// <summary>

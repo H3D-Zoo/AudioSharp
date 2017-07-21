@@ -83,7 +83,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetSessionEnumeratorNative(out AudioSessionEnumerator sessionEnumerator)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
+            int result = InteropCall.CallI(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             sessionEnumerator = ptr != IntPtr.Zero ? new AudioSessionEnumerator(ptr) : null;
             return result;
         }
@@ -122,7 +122,7 @@ namespace CSCore.CoreAudioAPI
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(
+                    result = InteropCall.CallI(
                         UnsafeBasePtr,
                         ptr,
                         ((void**)(*(void**)UnsafeBasePtr))[6]);
@@ -174,7 +174,7 @@ namespace CSCore.CoreAudioAPI
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(
+                    result = InteropCall.CallI(
                         UnsafeBasePtr,
                         ptr,
                         ((void**)(*(void**)UnsafeBasePtr))[7]);
@@ -225,7 +225,7 @@ namespace CSCore.CoreAudioAPI
                 IntPtr ptr0 = sessionId != null ? Marshal.StringToHGlobalUni(sessionId) : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(UnsafeBasePtr, (void*)ptr0, (void*)ptr,
+                    result = InteropCall.CallI(UnsafeBasePtr, (void*)ptr0, (void*)ptr,
                         ((void**)(*(void**)UnsafeBasePtr))[8]);
                 }
                 finally
@@ -271,7 +271,7 @@ namespace CSCore.CoreAudioAPI
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(UnsafeBasePtr, (void*)ptr, ((void**)(*(void**)UnsafeBasePtr))[9]);
+                    result = InteropCall.CallI(UnsafeBasePtr, (void*)ptr, ((void**)(*(void**)UnsafeBasePtr))[9]);
                 }
                 finally
                 {

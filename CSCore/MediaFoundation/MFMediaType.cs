@@ -130,7 +130,7 @@ namespace CSCore.MediaFoundation
             majorType = default(Guid);
             fixed (void* ptr = &majorType)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[33]);
+                return LocalInterop.Calliint(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -156,7 +156,7 @@ namespace CSCore.MediaFoundation
             iscompressed = default(NativeBool);
             fixed (void* ptr = &iscompressed)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[34]);
+                return LocalInterop.Calliint(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[34]);
             }
         }
 
@@ -183,7 +183,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &flags)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[35]);
+                return LocalInterop.Calliint(UnsafeBasePtr, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[35]);
             }
         }
 
@@ -212,7 +212,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &representation)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresentation, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[36]);
+                return LocalInterop.Calliint(UnsafeBasePtr, guidRepresentation, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[36]);
             }
         }
 
@@ -239,7 +239,7 @@ namespace CSCore.MediaFoundation
         /// <remarks>For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms703846(v=vs.85).aspx"/>.</remarks>        
         public unsafe int FreeRepresentationNative(Guid guidRepresentation, IntPtr representation)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresentation, representation, ((void**)(*(void**)UnsafeBasePtr))[37]);
+            return LocalInterop.Calliint(UnsafeBasePtr, guidRepresentation, representation, ((void**)(*(void**)UnsafeBasePtr))[37]);
         }
 
         /// <summary>

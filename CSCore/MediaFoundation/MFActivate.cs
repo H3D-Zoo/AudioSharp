@@ -31,7 +31,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* pptr = &ptr)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &riid, pptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
+                return LocalInterop.Calliint(UnsafeBasePtr, &riid, pptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -68,7 +68,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int ShutdownObjectNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[34]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[34]);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int DetachObjectNative()
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[35]);
+            return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[35]);
         }
 
         /// <summary>

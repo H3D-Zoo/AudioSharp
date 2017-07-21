@@ -560,7 +560,6 @@
     <Compile Include="Win32\NativeBool.cs" />
     <Compile Include="Win32\HResult.cs" />
     <Compile Include="Utils\ReadBlockStream.cs" />
-    <Compile Include="Utils\PostCompiler\RemoveObjAttribute.cs" />
     <Compile Include="WaveFormatExtensible.cs" />
     <Compile Include="Codecs\WAV\DataChunk.cs" />
     <Compile Include="Codecs\WAV\FmtChunk.cs" />
@@ -640,7 +639,6 @@
     <Compile Include="Utils\CRC16.cs" />
     <Compile Include="Utils\CRC8.cs" />
     <Compile Include="Utils\CRCBase.cs" />
-    <Compile Include="Utils\PostCompiler\CSCalliAttribute.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Utils\UintOffsets.cs" />
     <Compile Include="Utils\ILUtils.cs" />

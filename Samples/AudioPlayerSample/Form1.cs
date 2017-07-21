@@ -40,7 +40,7 @@ namespace AudioPlayerSample
             {
                 try
                 {
-                    _musicPlayer.Open(openFileDialog.FileName, (WaveOutDevice)comboBox1.SelectedItem);
+                    _musicPlayer.Open(openFileDialog.FileName);
                     trackbarVolume.Value = _musicPlayer.Volume;
 
                     btnPlay.Enabled = true;

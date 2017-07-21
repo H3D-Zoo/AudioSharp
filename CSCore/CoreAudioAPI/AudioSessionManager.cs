@@ -31,7 +31,7 @@ namespace CSCore.CoreAudioAPI
         {
             sessionControl = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(UnsafeBasePtr, &audioSessionGuid, streamFlags, &ptr,
+            int result = InteropCall.CallI(UnsafeBasePtr, &audioSessionGuid, streamFlags, &ptr,
                 ((void**) (*(void**) UnsafeBasePtr))[3]);
             if (ptr != IntPtr.Zero)
                 sessionControl = new AudioSessionControl(ptr);
@@ -64,7 +64,7 @@ namespace CSCore.CoreAudioAPI
         {
             audioVolume = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(UnsafeBasePtr, &audioSessionGuid, crossProcessSession, &ptr,
+            int result = InteropCall.CallI(UnsafeBasePtr, &audioSessionGuid, crossProcessSession, &ptr,
                 ((void**) (*(void**) UnsafeBasePtr))[4]);
             if (ptr != IntPtr.Zero)
                 audioVolume = new SimpleAudioVolume(ptr);

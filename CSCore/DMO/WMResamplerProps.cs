@@ -64,7 +64,7 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SetHalfFilterLengthNative(int quality)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, quality, ((void**) (*(void**) UnsafeBasePtr))[3]);
+            return LocalInterop.CalliMethodPtr(UnsafeBasePtr, quality, ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace CSCore.DMO
         {
             fixed (void* pccm = &channelConversitionMatrix[0])
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pccm, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return LocalInterop.CalliMethodPtr(UnsafeBasePtr, pccm, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
     }

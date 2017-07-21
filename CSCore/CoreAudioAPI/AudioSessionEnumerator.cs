@@ -55,7 +55,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &count)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -69,7 +69,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetSessionNative(int index, out AudioSessionControl session)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(UnsafeBasePtr, index, &ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            int result = InteropCall.CallI(UnsafeBasePtr, index, &ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
             session = ptr == IntPtr.Zero ? null : new AudioSessionControl(ptr);
             return result;
         }

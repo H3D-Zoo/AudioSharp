@@ -53,7 +53,7 @@ namespace CSCore.MediaFoundation
 			fixed (void* psi = &streamIndex)
 			{
 				void* ptmt = targetMediaType == null ? IntPtr.Zero.ToPointer() : targetMediaType.BasePtr.ToPointer();
-				return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptmt, psi, ((void**)(*(void**)UnsafeBasePtr))[3]);
+				return LocalInterop.Calliint(UnsafeBasePtr, ptmt, psi, ((void**)(*(void**)UnsafeBasePtr))[3]);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace CSCore.MediaFoundation
 		{
 			void* imt = (void*)(inputMediaType == null ? IntPtr.Zero : inputMediaType.BasePtr);
 			void* ep = (void*)(encodingParameters == null ? IntPtr.Zero : encodingParameters.BasePtr);
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, imt, ep, ((void**)(*(void**)UnsafeBasePtr))[4]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, imt, ep, ((void**)(*(void**)UnsafeBasePtr))[4]);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int BeginWritingNative()
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[5]);
+			return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[5]);
 		}
 
 		/// <summary>
@@ -124,7 +124,7 @@ namespace CSCore.MediaFoundation
 		public unsafe int WriteSampleNative(int streamIndex, MFSample sample)
 		{
 			void* ps = (void*)(sample == null ? IntPtr.Zero : sample.BasePtr);
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, ps, ((void**)(*(void**)UnsafeBasePtr))[6]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, ps, ((void**)(*(void**)UnsafeBasePtr))[6]);
 		}
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int SendStreamTickNative(int streamIndex, long timeStamp)
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, timeStamp, ((void**)(*(void**)UnsafeBasePtr))[7]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, timeStamp, ((void**)(*(void**)UnsafeBasePtr))[7]);
 		}
 
 		/// <summary>
@@ -169,7 +169,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int PlaceMarkerNative(int streamIndex, IntPtr context)
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, (void*)context, ((void**)(*(void**)UnsafeBasePtr))[8]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, (void*)context, ((void**)(*(void**)UnsafeBasePtr))[8]);
 		}
 
 		/// <summary>
@@ -190,7 +190,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int NotifyEndOfSegmentNative(int streamIndex)
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[9]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[9]);
 		}
 
 		/// <summary>
@@ -210,7 +210,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int FlushNative(int streamIndex)
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[10]);
+			return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[10]);
 		}
 
 		/// <summary>
@@ -229,7 +229,7 @@ namespace CSCore.MediaFoundation
 		/// <returns>HRESULT</returns>
 		public unsafe int FinalizeWritingNative()
 		{
-			return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[11]);
+			return LocalInterop.Calliint(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[11]);
 		}
 
 		/// <summary>
@@ -255,7 +255,7 @@ namespace CSCore.MediaFoundation
 		{
 			fixed (void* ptr = &pObject)
 			{
-				return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, &guidService, &riid, ptr, ((void**)(*(void**)UnsafeBasePtr))[12]);
+				return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, &guidService, &riid, ptr, ((void**)(*(void**)UnsafeBasePtr))[12]);
 			}
 		}
 
@@ -286,7 +286,7 @@ namespace CSCore.MediaFoundation
 			statistics.Cb = Marshal.SizeOf(statistics);
 			fixed (void* ptr = &statistics)
 			{
-				return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, ptr, ((void**)(*(void**)UnsafeBasePtr))[13]);
+				return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, ptr, ((void**)(*(void**)UnsafeBasePtr))[13]);
 			}
 		}
 

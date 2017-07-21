@@ -48,6 +48,8 @@ namespace SharpCli
         private TypeReference voidPointerType;
         private TypeReference intType;
 
+        private MethodDefinition sizeofMethod;
+
         /// <summary>
         /// Creates a module init for a C# assembly.
         /// </summary>
@@ -123,8 +125,9 @@ namespace SharpCli
             gen.Emit(OpCodes.Ldloc_1);
 
             // totalSize = sizeof(T)
-            gen.Emit(OpCodes.Sizeof, paramT);
-            gen.Emit(OpCodes.Conv_I4);
+            var sizeofTMethod = new GenericInstanceMethod(sizeofMethod);
+            sizeofTMethod.GenericArguments.Add(paramT);
+            gen.Emit(OpCodes.Call, sizeofTMethod);
             gen.Emit(OpCodes.Stloc_0);
 
             // Push (2) totalSize
@@ -318,8 +321,9 @@ namespace SharpCli
             gen.Emit(OpCodes.Ldloc_1);
 
             // totalSize = sizeof(T) * count
-            gen.Emit(OpCodes.Sizeof, paramT);
-            gen.Emit(OpCodes.Conv_I4);
+            var sizeofTMethod = new GenericInstanceMethod(sizeofMethod);
+            sizeofTMethod.GenericArguments.Add(paramT);
+            gen.Emit(OpCodes.Call, sizeofTMethod);
             gen.Emit(OpCodes.Ldarg_3);
             gen.Emit(OpCodes.Mul);
             gen.Emit(OpCodes.Stloc_0);
@@ -373,8 +377,9 @@ namespace SharpCli
             gen.Emit(OpCodes.Ldarg_0);
 
             // totalSize = sizeof(T)
-            gen.Emit(OpCodes.Sizeof, paramT);
-            gen.Emit(OpCodes.Conv_I4);
+            var sizeofTMethod = new GenericInstanceMethod(sizeofMethod);
+            sizeofTMethod.GenericArguments.Add(paramT);
+            gen.Emit(OpCodes.Call, sizeofTMethod);
             gen.Emit(OpCodes.Stloc_0);
 
             // Push (2) totalSize
@@ -446,8 +451,9 @@ namespace SharpCli
             gen.Emit(OpCodes.Ldarg_0);
 
             // totalSize = sizeof(T) * count
-            gen.Emit(OpCodes.Sizeof, paramT);
-            gen.Emit(OpCodes.Conv_I4);
+            var sizeofTMethod = new GenericInstanceMethod(sizeofMethod);
+            sizeofTMethod.GenericArguments.Add(paramT);
+            gen.Emit(OpCodes.Call, sizeofMethod);
             gen.Emit(OpCodes.Ldarg_3);
             gen.Emit(OpCodes.Conv_I4);
             gen.Emit(OpCodes.Mul);
@@ -796,6 +802,8 @@ namespace SharpCli
             voidPointerType = new PointerType(assembly.MainModule.Import(voidType));
             intType = assembly.MainModule.Import( assembly.MainModule.TypeSystem.Int32.Resolve());
 
+            // Import SharpDX.Utilities::SizeOf<T>
+            sizeofMethod = assembly.MainModule.Types.First(type =>type.Name == "Utilities" && type.Namespace == "SharpDX").Methods.First(method => method.Name == "SizeOf");
             // Remove CompilationRelaxationsAttribute
             for (int i = 0; i < assembly.CustomAttributes.Count; i++)
             {

@@ -78,7 +78,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &pu64Frequency)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -103,7 +103,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p0 = &pu64Position, p1 = &pu64QPCPosition)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return InteropCall.CallI(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -116,7 +116,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &characteristics)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
     }

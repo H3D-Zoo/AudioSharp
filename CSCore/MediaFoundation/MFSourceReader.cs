@@ -74,7 +74,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (NativeBool* p = (&selectedRef))
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, (IntPtr*)p, ((void**)(*(void**)UnsafeBasePtr))[3]);
+                return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, (IntPtr*)p, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -98,7 +98,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetStreamSelectionNative(int streamIndex, NativeBool selected)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, selected, ((void**)(*(void**)UnsafeBasePtr))[4]);
+            return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, selected, ((void**)(*(void**)UnsafeBasePtr))[4]);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace CSCore.MediaFoundation
         public unsafe int GetNativeMediaTypeNative(int streamIndex, int mediatypeIndex, out MFMediaType mediaType)
         {
             IntPtr ptr = IntPtr.Zero;
-            var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, mediatypeIndex, &ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
+            var result = LocalInterop.Calliint(UnsafeBasePtr, streamIndex, mediatypeIndex, &ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             mediaType = new MFMediaType(ptr);
             return result;
         }
@@ -148,7 +148,7 @@ namespace CSCore.MediaFoundation
         public unsafe int GetCurrentMediaTypeNative(int streamIndex, out MFMediaType mediaType)
         {
             IntPtr ptr = IntPtr.Zero;
-            var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, &ptr, ((void**)(*(void**)UnsafeBasePtr))[6]);
+            var result = LocalInterop.Calliint(UnsafeBasePtr, streamIndex, &ptr, ((void**)(*(void**)UnsafeBasePtr))[6]);
             mediaType = new MFMediaType(ptr);
             return result;
         }
@@ -175,7 +175,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetCurrentMediaTypeNative(int streamIndex, IntPtr reserved, MFMediaType mediaType)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, reserved, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[7]);
+            return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, reserved, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[7]);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetCurrentPositionNative(Guid guidTimeFormat, PropertyVariant position)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &guidTimeFormat, &position, ((void**)(*(void**)UnsafeBasePtr))[8]);
+            return LocalInterop.Calliint(UnsafeBasePtr, &guidTimeFormat, &position, ((void**)(*(void**)UnsafeBasePtr))[8]);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace CSCore.MediaFoundation
             IntPtr psample = IntPtr.Zero;
             fixed (void* ptr0 = &actualStreamIndex, ptr1 = &streamFlags, ptr2 = &timestamp)
             {
-                int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, controlFlags, ptr0, ptr1, ptr2, &psample, ((void**)(*(void**)UnsafeBasePtr))[9]);
+                int result = LocalInterop.Calliint(UnsafeBasePtr, streamIndex, controlFlags, ptr0, ptr1, ptr2, &psample, ((void**)(*(void**)UnsafeBasePtr))[9]);
                 sample = psample == IntPtr.Zero ? null : new MFSample(psample);
                 return result;
             }
@@ -256,7 +256,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int FlushNative(int streamIndex)
         {
-            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[10]);
+            return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, ((void**)(*(void**)UnsafeBasePtr))[10]);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &service)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, &guidService, &riid, ptr, ((void**)(*(void**)UnsafeBasePtr))[11]);
+                return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, &guidService, &riid, ptr, ((void**)(*(void**)UnsafeBasePtr))[11]);
             }
         }
 
@@ -312,7 +312,7 @@ namespace CSCore.MediaFoundation
             variant = default(PropertyVariant);
             fixed (void* ptr = &variant)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, streamIndex, &guidAttribute, ptr, ((void**)(*(void**)UnsafeBasePtr))[12]);
+                return LocalInterop.Calliint(UnsafeBasePtr, streamIndex, &guidAttribute, ptr, ((void**)(*(void**)UnsafeBasePtr))[12]);
             }
         }
 
