@@ -191,6 +191,7 @@
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
     <Compile Include="Codecs\WMA\WmaDecoder.cs" />
+    <Compile Include="Collections\EqualityComparer.cs" />
     <Compile Include="COM\ComObject.cs" />
     <Compile Include="COM\ComObjectShadow.cs" />
     <Compile Include="COM\Configuration.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="COM\IInspectable.cs" />
     <Compile Include="COM\InspectableShadow.cs" />
     <Compile Include="COM\IUnknown.cs" />
+    <Compile Include="COM\ObjectReference.cs" />
     <Compile Include="COM\ObjectTracker.cs" />
     <Compile Include="COM\Result.cs" />
     <Compile Include="COM\ResultDescriptor.cs" />
