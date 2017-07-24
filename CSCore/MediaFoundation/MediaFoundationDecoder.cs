@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using CSCore.Win32;
+using SharpDX.MediaFoundation;
+using SharpDX.Win32;
 
 namespace CSCore.MediaFoundation
 {
@@ -12,7 +13,7 @@ namespace CSCore.MediaFoundation
     {
         private readonly bool _hasFixedLength;
         private readonly Object _lockObj = new Object();
-        private MFByteStream _byteStream;
+        private ByteStream _byteStream;
 
         private byte[] _decoderBuffer;
         private int _decoderBufferCount;
@@ -23,7 +24,7 @@ namespace CSCore.MediaFoundation
         //could not find a possibility to find out the position -> we have to track the position ourselves.
         private long _position;
 
-        private MFSourceReader _reader;
+        private SourceReader _reader;
         private Stream _stream;
         private WaveFormat _waveFormat;
         private bool _positionChanged;
@@ -58,9 +59,8 @@ namespace CSCore.MediaFoundation
             if (!stream.CanRead)
                 throw new ArgumentException("Stream is not readable.", "stream");
 
-            stream = new ComStream(stream, true);
             _stream = stream;
-            _byteStream = MediaFoundationCore.IStreamToByteStream((IStream) stream);
+            _byteStream = new ByteStream(stream); 
             _reader = Initialize(_byteStream);
         }
 
@@ -68,7 +68,7 @@ namespace CSCore.MediaFoundation
         ///     Initializes a new instance of the <see cref="MediaFoundationDecoder" /> class.
         /// </summary>
         /// <param name="byteStream">Stream which provides the audio data to decode.</param>
-        public MediaFoundationDecoder(MFByteStream byteStream)
+        public MediaFoundationDecoder(ByteStream byteStream)
         {
             if (byteStream == null)
                 throw new ArgumentNullException("byteStream");
@@ -113,16 +113,16 @@ namespace CSCore.MediaFoundation
 
                 while (read < count)
                 {
-                    MFSourceReaderFlags flags;
+                    SourceReaderFlags flags;
                     long timestamp;
                     int actualStreamIndex;
                     using (
-                        MFSample sample = _reader.ReadSample(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0,
+                        Sample sample = _reader.ReadSample(SourceReaderIndex.FirstAudioStream, 0,
                             out actualStreamIndex, out flags, out timestamp))
                     {
-                        if (flags != MFSourceReaderFlags.None)
+                        if (flags != SourceReaderFlags.None)
                             break;
-                        var sampleTime = sample.GetSampleTime();
+                        var sampleTime = sample.SampleTime;
                         if (_positionChanged && timestamp > 0)
                         {
                             long actualPosition = NanoSecond100UnitsToBytes(sampleTime);
@@ -133,9 +133,9 @@ namespace CSCore.MediaFoundation
                             SkipBytes(bytesToSkip);
                         }
 
-                        using (MFMediaBuffer mediaBuffer = sample.ConvertToContiguousBuffer())
+                        using (var mediaBuffer = sample.ConvertToContiguousBuffer())
                         {
-                            using (MFMediaBuffer.LockDisposable @lock = mediaBuffer.Lock())
+                            using (MediaBuffer.LockDisposable @lock = mediaBuffer.Lock())
                             {
                                 _decoderBuffer = _decoderBuffer.CheckBuffer(@lock.CurrentLength);
                                 Marshal.Copy(@lock.Buffer, _decoderBuffer, 0, @lock.CurrentLength);
@@ -233,29 +233,29 @@ namespace CSCore.MediaFoundation
             get { return _reader.CanSeek; }
         }
 
-        private MFSourceReader Initialize(MFByteStream byteStream)
+        private SourceReader Initialize(ByteStream byteStream)
         {
-            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream.BasePtr, IntPtr.Zero));
+            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream.NativePointer, null));
         }
 
-        private MFSourceReader Initialize(MFSourceReader reader)
+        private SourceReader Initialize(SourceReader reader)
         {
             try
             {
-                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_ALL_STREAMS, false);
-                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+                reader.SetStreamSelection(SourceReaderIndex.AllStreams, false);
+                reader.SetStreamSelection(SourceReaderIndex.FirstAudioStream, true);
 
-                using (MFMediaType mediaType = MFMediaType.CreateEmpty())
+                using (var mediaType =new MediaType())
                 {
-                    mediaType.MajorType = AudioSubTypes.MediaTypeAudio;
-                    mediaType.SubType = AudioSubTypes.Pcm; //variable??
+                    mediaType.Set(MediaTypeAttributeKeys.MajorType, AudioSubTypes.MediaTypeAudio);
+                    mediaType.Set(MediaTypeAttributeKeys.Subtype, AudioSubTypes.Pcm);
 
-                    reader.SetCurrentMediaType(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
+                    reader.SetCurrentMediaType(SourceReaderIndex.FirstAudioStream, mediaType);
                 }
 
                 using (
-                    MFMediaType currentMediaType =
-                        reader.GetCurrentMediaType(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
+                    var currentMediaType =
+                        reader.GetCurrentMediaType(SourceReaderIndex.FirstAudioStream))
                 {
                     if (currentMediaType.MajorType != AudioSubTypes.MediaTypeAudio)
                     {
@@ -280,7 +280,7 @@ namespace CSCore.MediaFoundation
                     }
                 }
 
-                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+                reader.SetStreamSelection(SourceReaderIndex.FirstAudioStream, true);
 
                 if (_hasFixedLength)
                     _length = GetLength(reader);
@@ -294,7 +294,7 @@ namespace CSCore.MediaFoundation
             }
         }
 
-        private long GetLength(MFSourceReader reader)
+        private long GetLength(SourceReader reader)
         {
             lock (_lockObj)
             {
@@ -303,14 +303,11 @@ namespace CSCore.MediaFoundation
                     if (reader == null)
                         return 0;
 
-                    using (
-                        PropertyVariant value =
-                            reader.GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE,
-                                MediaFoundationAttributes.MF_PD_DURATION))
-                    {
+                    var value =
+                         reader.GetPresentationAttribute(SourceReaderIndex.MediaSource,
+                             MediaFoundationAttributes.MF_PD_DURATION);
                         //bug: still, depending on the decoder, this returns imprecise values.
-                        return NanoSecond100UnitsToBytes(value.HValue);
-                    }
+                        return NanoSecond100UnitsToBytes((long)value.Value);
                 }
                 catch (Exception)
                 {
@@ -327,7 +324,7 @@ namespace CSCore.MediaFoundation
                 {
                     value -= (value % WaveFormat.BlockAlign);
                     long hnsPos = BytesToNanoSecond100Units(value);
-                    var propertyVariant = new PropertyVariant {HValue = hnsPos, DataType = VarEnum.VT_I8};
+                    var propertyVariant = new Variant() { Value = hnsPos};
                     _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
                     _decoderBufferCount = 0;
                     _decoderBufferOffset = 0;

@@ -117,6 +117,7 @@
     <Compile Include="AudioSubTypes.Utils.cs">
       <DependentUpon>AudioSubTypes.tt</DependentUpon>
     </Compile>
+    <Compile Include="CallbackBase.cs" />
     <Compile Include="ChannelMask.cs" />
     <Compile Include="ChannelMasks.cs" />
     <Compile Include="Codecs\AAC\AacAudioProfileLevelIndication.cs" />
@@ -192,7 +193,9 @@
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
     <Compile Include="Codecs\WMA\WmaDecoder.cs" />
     <Compile Include="Collections\EqualityComparer.cs" />
+    <Compile Include="COM\ComArray.cs" />
     <Compile Include="COM\ComObject.cs" />
+    <Compile Include="COM\ComObjectCallback.cs" />
     <Compile Include="COM\ComObjectShadow.cs" />
     <Compile Include="COM\Configuration.cs" />
     <Compile Include="COM\CppObject.cs" />
@@ -337,44 +340,53 @@
     <Compile Include="DSP\NotchFilter.cs" />
     <Compile Include="DSP\PeakFilter.cs" />
     <Compile Include="DSP\PitchShifterInternal.cs" />
+    <Compile Include="DXGI\Generated\DESKTOP_APP\Enumerations.cs" />
     <Compile Include="FluentExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IReadableAudioSource.cs" />
     <Compile Include="IWriteable.cs" />
+    <Compile Include="Mathematics\Interop\RawBool.cs" />
+    <Compile Include="Mathematics\Interop\RawColorBGRA.cs" />
+    <Compile Include="Mathematics\Interop\RawPoint.cs" />
+    <Compile Include="Mathematics\Interop\RawRectangle.cs" />
+    <Compile Include="Mathematics\Interop\RawVector3.cs" />
+    <Compile Include="MediaFoundation\Activate.cs" />
+    <Compile Include="MediaFoundation\AsyncCallbackShadow.cs" />
+    <Compile Include="MediaFoundation\ByteStream.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
-    <Compile Include="MediaFoundation\IMFCollection.cs" />
+    <Compile Include="MediaFoundation\Generated\DESKTOP_APP\Enumerations.cs" />
+    <Compile Include="MediaFoundation\Generated\DESKTOP_APP\Functions.cs" />
+    <Compile Include="MediaFoundation\Generated\DESKTOP_APP\Interfaces.cs" />
+    <Compile Include="MediaFoundation\Generated\DESKTOP_APP\LocalInterop.cs" />
+    <Compile Include="MediaFoundation\Generated\DESKTOP_APP\Structures.cs" />
+    <Compile Include="MediaFoundation\IAsyncCallback.cs" />
+    <Compile Include="MediaFoundation\MediaAttributeKey.cs" />
+    <Compile Include="MediaFoundation\MediaAttributes.cs" />
+    <Compile Include="MediaFoundation\MediaBuffer.cs" />
     <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
     <Compile Include="MediaFoundation\MediaFoundationCore.cs" />
     <Compile Include="MediaFoundation\MediaFoundationDecoder.cs" />
     <Compile Include="MediaFoundation\MediaFoundationEncoder.cs" />
-    <Compile Include="MediaFoundation\MFActivate.cs" />
-    <Compile Include="MediaFoundation\MFByteStream.cs" />
-    <Compile Include="MediaFoundation\MFByteStreamCapsFlags.cs" />
-    <Compile Include="MediaFoundation\MFByteStreamSeekOrigin.cs" />
-    <Compile Include="MediaFoundation\MFTEnumerator.cs" />
-    <Compile Include="MediaFoundation\NativeMethods.cs" />
-    <Compile Include="MediaFoundation\MFMediaSourceCharacteristics.cs" />
-    <Compile Include="MediaFoundation\MFMediaTypes.cs" />
-    <Compile Include="MediaFoundation\MFSampleFlags.cs" />
-    <Compile Include="MediaFoundation\MFSinkWriter.cs" />
-    <Compile Include="MediaFoundation\MFSinkWriterStatistics.cs" />
-    <Compile Include="MediaFoundation\MFSourceReaderFlags.cs" />
+    <Compile Include="MediaFoundation\MediaType.cs" />
     <Compile Include="MediaFoundation\MFTCategories.cs" />
+    <Compile Include="MediaFoundation\MFTEnumerator.cs" />
     <Compile Include="MediaFoundation\MFTEnumFlags.cs" />
-    <Compile Include="MediaFoundation\MFTRegisterTypeInfo.cs" />
-    <Compile Include="MediaFoundation\SourceReaderControlFlags.cs" />
+    <Compile Include="MediaFoundation\ResourceCharacteristics.cs" />
+    <Compile Include="MediaFoundation\SinkWriter.cs" />
+    <Compile Include="MediaFoundation\SourceReader.cs" />
     <Compile Include="MediaFoundation\TranscodeContainerTypes.cs" />
+    <Compile Include="MediaFoundation\WorkQueueId.cs" />
     <Compile Include="MmResult.cs" />
+    <Compile Include="Multimedia\AudioEndpointRole.cs" />
     <Compile Include="Multimedia\Enumerations.cs" />
     <Compile Include="Multimedia\WaveFormat.cs" />
     <Compile Include="Multimedia\WaveFormatAdpcm.cs" />
     <Compile Include="Multimedia\WaveFormatExtensible.cs" />
     <Compile Include="Sharp\Interop.cs" />
-    <Compile Include="Sharp\RawBool.cs" />
-    <Compile Include="Sharp\RawVector3.cs" />
     <Compile Include="Sharp\TagAttribute.cs" />
     <Compile Include="Sharp\TypeExtensions.cs" />
     <Compile Include="Sharp\Utilities.cs" />
+    <Compile Include="Size2.cs" />
     <Compile Include="SoundIn\RecordingState.cs" />
     <Compile Include="SoundIn\RecordingStoppedEventArgs.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
@@ -442,10 +454,28 @@
     <Compile Include="TimeConverterFactory.cs" />
     <Compile Include="Utils\CSCoreUtils.cs" />
     <Compile Include="Utils\Vector3.cs" />
+    <Compile Include="Win32\BitmapInfoHeader.cs" />
     <Compile Include="Win32\CLSCTX.cs" />
     <Compile Include="Win32\ComStream.cs" />
+    <Compile Include="Win32\ComStreamBaseShadow.cs" />
+    <Compile Include="Win32\ComStreamProxy.cs" />
+    <Compile Include="Win32\ComStreamShadow.cs" />
+    <Compile Include="Win32\ComStringEnumerator.cs" />
+    <Compile Include="Win32\ErrorCode.cs" />
+    <Compile Include="Win32\Generated\DESKTOP_APP\Enumerations.cs" />
+    <Compile Include="Win32\Generated\DESKTOP_APP\Interfaces.cs" />
+    <Compile Include="Win32\Generated\DESKTOP_APP\Structures.cs" />
+    <Compile Include="Win32\IStreamBase.cs" />
+    <Compile Include="Win32\NamespaceDoc.cs" />
+    <Compile Include="Win32\NativeMessage.cs" />
     <Compile Include="Win32\NativeMethods.cs" />
     <Compile Include="Win32\IStream.cs" />
+    <Compile Include="Win32\PropertyBag.cs" />
+    <Compile Include="Win32\PropertyBagKey.cs" />
+    <Compile Include="Win32\SecurityAttributes.cs" />
+    <Compile Include="Win32\Variant.cs" />
+    <Compile Include="Win32\VariantElementType.cs" />
+    <Compile Include="Win32\VariantType.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
     <Compile Include="XAudio2\AudioStreamCategory.cs" />
     <Compile Include="XAudio2\DebugConfiguration.cs" />
@@ -521,18 +551,6 @@
     <Compile Include="DSP\DmoChannelResampler.cs" />
     <Compile Include="CoreAudioAPI\MMDevice.cs" />
     <Compile Include="Win32\PropertyStore.cs" />
-    <Compile Include="MediaFoundation\InteropCalls.cs" />
-    <Compile Include="MediaFoundation\MediaFoundationException.cs" />
-    <Compile Include="MediaFoundation\MediaTypeEqualFlags.cs" />
-    <Compile Include="MediaFoundation\MFAttribute.cs" />
-    <Compile Include="MediaFoundation\MFAttributeMatchType.cs" />
-    <Compile Include="MediaFoundation\MFAttributes.cs" />
-    <Compile Include="MediaFoundation\MFAttributeType.cs" />
-    <Compile Include="MediaFoundation\MFMediaBuffer.cs" />
-    <Compile Include="MediaFoundation\MFMediaType.cs" />
-    <Compile Include="MediaFoundation\MFSample.cs" />
-    <Compile Include="MediaFoundation\MFSourceReader.cs" />
-    <Compile Include="MediaFoundation\MFWaveFormatExConvertFlags.cs" />
     <Compile Include="Streams\BlockReadEventArgs.cs" />
     <Compile Include="Streams\MonoToStereoSource.cs" />
     <Compile Include="Streams\NotificationSource.cs" />
@@ -668,7 +686,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DirectSound\Documentation\CodeComments.xml" />
+    <Content Include="DXGI\Documentation\CodeComments.xml" />
+    <Content Include="MediaFoundation\Documentation\CodeComments.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

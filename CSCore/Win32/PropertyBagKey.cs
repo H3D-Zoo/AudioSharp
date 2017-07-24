@@ -17,35 +17,27 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-using System;
-
 namespace SharpDX.Win32
 {
-    public partial class ComStream
+    /// <summary>
+    /// Identifies a typed property in a <see cref="PropertyBag"/>.
+    /// </summary>
+    /// <typeparam name="T1">The public type of this property.</typeparam>
+    /// <typeparam name="T2">The marshaling type of this property.</typeparam>
+    public class PropertyBagKey<T1,T2> 
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Initializes a new instance of the <see cref="PropertyBagKey{T1,T2}"/> class.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="name">The name.</param>
+        public PropertyBagKey(string name)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
+            Name = name;
         }
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Gets the name.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        public string Name { get; private set; }
     }
 }
-

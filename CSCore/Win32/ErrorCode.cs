@@ -18,33 +18,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
 namespace SharpDX.Win32
 {
-    public partial class ComStream
+    public partial class ErrorCodeHelper
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Converts a win32 error code to a <see cref="Result"/>.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="errorCode">The error code.</param>
+        /// <returns>A HRESULT code</returns>
+        public static Result ToResult(ErrorCode errorCode)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
+            return ToResult((int)errorCode);
         }
-
+        
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Converts a win32 error code to a <see cref="Result"/>.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
+        /// <param name="errorCode">The error code.</param>
+        /// <returns>A HRESULT code</returns>
+        public static Result ToResult(int errorCode)
         {
-            return ComStreamShadow.ToIntPtr(stream);
+            return new Result(((errorCode <= 0) ? unchecked((uint)errorCode) : ((unchecked((uint)errorCode) & 0x0000FFFF) | 0x80070000)));
         }
     }
 }

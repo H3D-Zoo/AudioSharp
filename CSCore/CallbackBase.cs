@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,35 +17,32 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
-namespace SharpDX.Win32
+namespace SharpDX
 {
-    public partial class ComStream
+    /// <summary>
+    /// Callback base implementation of <see cref="ICallbackable"/>.
+    /// </summary>
+    public abstract class CallbackBase : DisposeBase, ICallbackable
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
+            if (disposing)
+            {
+                var callback = ((ICallbackable) this);
+                if (callback.Shadow != null)
+                {
+                    callback.Shadow.Dispose();
+                    callback.Shadow = null;
+                }
+            }
         }
 
-        /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        IDisposable ICallbackable.Shadow { get; set; }
     }
 }
-

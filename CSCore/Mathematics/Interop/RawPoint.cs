@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,34 +18,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
-namespace SharpDX.Win32
+namespace SharpDX.Mathematics.Interop
 {
-    public partial class ComStream
+    /// <summary>
+    /// Interop type for a Point (2 ints).
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    [DebuggerDisplay("X: {X}, Y: {Y}")]
+    public struct RawPoint
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Initializes a new instance of the <see cref="RawPoint"/> struct.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="x">The X.</param>
+        /// <param name="y">The y.</param>
+        public RawPoint(int x, int y)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
+            X = x;
+            Y = y;
         }
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Left coordinate.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
-    }
-}
+        public int X;
 
+        /// <summary>
+        /// Top coordinate.
+        /// </summary>
+        public int Y;
+   }
+}

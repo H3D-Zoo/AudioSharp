@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,34 +18,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
-namespace SharpDX.Win32
+namespace SharpDX.Mathematics.Interop
 {
-    public partial class ComStream
+    /// <summary>
+    /// Interop type for a ColorBGRA (BGRA, 4 bytes).
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Size = 4)]
+    [DebuggerDisplay("R:{R} G:{G} B:{B} A:{A}")]
+    public struct RawColorBGRA
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Initializes a new instance of the <see cref="RawColorBGRA"/> struct.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="b">The b.</param>
+        /// <param name="g">The g.</param>
+        /// <param name="r">The r.</param>
+        /// <param name="a">A.</param>
+        public RawColorBGRA(byte b, byte g, byte r, byte a)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
+            B = b;
+            G = g;
+            R = r;
+            A = a;
         }
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// The blue component of the color.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        public byte B;
+
+        /// <summary>
+        /// The green component of the color.
+        /// </summary>
+        public byte G;
+
+        /// <summary>
+        /// The red component of the color.
+        /// </summary>
+        public byte R;
+
+        /// <summary>
+        /// The alpha component of the color.
+        /// </summary>
+        public byte A;
     }
 }
-

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,35 +17,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
 namespace SharpDX.Win32
 {
-    public partial class ComStream
+    /// <summary>
+    /// Type of a variant
+    /// </summary>
+    [Flags]
+    public enum VariantType : ushort
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Simple value
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
-        {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
-        }
+        Default = 0x0000,
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Vector value.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        Vector = 0x1000,
+
+        /// <summary>
+        /// Array value.
+        /// </summary>
+        Array = 0x2000,
+
+        /// <summary>
+        /// By reference.
+        /// </summary>
+        ByRef = 0x4000,
+
+        /// <summary>
+        /// Reserved value.
+        /// </summary>
+        Reserved = 0x8000,
     }
 }
-

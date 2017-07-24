@@ -1,4 +1,5 @@
 ﻿using CSCore.MediaFoundation;
+using SharpDX.MediaFoundation;
 using System;
 using System.IO;
 
@@ -11,7 +12,7 @@ namespace CSCore.Codecs.AAC
     {
 // ReSharper disable once InconsistentNaming
         private static readonly Guid MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION = new Guid("7632F0E6-9538-4d61-ACDA-EA29C8C14456");
-        private MFAttributes _outputTypeAttributes;
+        private MediaAttributes _outputTypeAttributes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AacEncoder"/> class.
@@ -57,13 +58,13 @@ namespace CSCore.Codecs.AAC
             SetTargetStream(targetStream, sourceMediaType, targetMediaType, containerType);
         }
 
-        private MFAttributes OutputTypeAttributes
+        private MediaAttributes OutputTypeAttributes
         {
             get
             {
                 if (_outputTypeAttributes == null && OutputMediaType != null)
                 {
-                    _outputTypeAttributes = OutputMediaType.QueryInterface<MFAttributes>();
+                    _outputTypeAttributes = OutputMediaType.QueryInterface<MediaAttributes>();
                 }
                 else if (OutputMediaType == null)
                 {
@@ -83,7 +84,7 @@ namespace CSCore.Codecs.AAC
         {
             get
             {
-                return (AacAudioProfileLevelIndication)OutputTypeAttributes.GetUINT32(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION);
+                return (AacAudioProfileLevelIndication)OutputTypeAttributes.GetInt(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION);
             }
             set
             {

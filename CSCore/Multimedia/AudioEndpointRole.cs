@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+﻿// Copyright (c) 2010-2011 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,34 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
-namespace SharpDX.Win32
+namespace SharpDX.Multimedia
 {
-    public partial class ComStream
+
+    /// <summary>
+    /// This enumeration defines constants that indicate the role that the system has assigned to an audio endpoint device.
+    /// </summary>
+    /// <msdn-id>dd370842</msdn-id>	
+    /// <unmanaged>ERole</unmanaged>	
+    /// <unmanaged-short>ERole</unmanaged-short>	
+    public enum AudioEndpointRole
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Games, system notification sounds, and voice commands
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
-        {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
-        }
+        Console,
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Music, movies, narration, and live music recording.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        Multimedia,
+
+        /// <summary>
+        /// Voice communications (talking to another person).
+        /// </summary>
+        Communications,
     }
 }
-

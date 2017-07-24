@@ -22,30 +22,24 @@ using System;
 
 namespace SharpDX.Win32
 {
-    public partial class ComStream
+    [Shadow(typeof(ComStreamBaseShadow))]
+    public partial interface IStreamBase
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Reads a specified number of bytes from the stream object into memory starting at the current seek pointer.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
-        {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
-        }
+        /// <param name="buffer">The read buffer.</param>
+        /// <param name="numberOfBytesToRead">The number of bytes to read.</param>
+        /// <returns>The actual number of bytes read from the stream object. </returns>
+        int Read(IntPtr buffer, int numberOfBytesToRead);
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Writes a specified number of bytes into the stream object starting at the current seek pointer.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
-        {
-            return ComStreamShadow.ToIntPtr(stream);
-        }
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="numberOfBytesToRead">The number of bytes to read.</param>
+        /// <returns>The actual number of bytes written to the stream object</returns>
+        int Write(IntPtr buffer, int numberOfBytesToRead);
     }
 }
 

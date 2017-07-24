@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
+// Copyright (c) 2010-2014 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,35 +17,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
-namespace SharpDX.Win32
+namespace SharpDX
 {
-    public partial class ComStream
+    /// <summary>
+    /// Base class for unmanaged callbackable Com object.
+    /// </summary>
+    public class ComObjectCallback : ComObject, ICallbackable
     {
         /// <summary>
-        /// Copies a specified number of bytes from the current seek pointer in the stream to the current seek pointer in another stream.
+        /// Initializes a new instance of the <see cref="ComObject"/> class.
         /// </summary>
-        /// <param name="streamDest">The stream destination.</param>
-        /// <param name="numberOfBytesToCopy">The number of bytes to copy.</param>
-        /// <param name="bytesWritten">The bytes written.</param>
-        /// <returns>The number of bytes read from this instance</returns>
-        public long CopyTo(IStream streamDest, long numberOfBytesToCopy, out long bytesWritten)
+        /// <param name="pointer">Pointer to Cpp Object</param>
+        protected ComObjectCallback(IntPtr pointer) : base(pointer)
         {
-            CopyTo_(ToIntPtr(streamDest), numberOfBytesToCopy, out bytesWritten);
-            return bytesWritten;
         }
 
         /// <summary>
-        /// Gets a com pointer to the underlying <see cref="IStream"/> object.
+        /// Initializes a new instance of the <see cref="ComObject"/> class.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A Com pointer</returns>
-        public static IntPtr ToIntPtr(IStream stream)
+        protected ComObjectCallback()
         {
-            return ComStreamShadow.ToIntPtr(stream);
+        }
+
+        /// <summary>
+        /// Implements <see cref="ICallbackable"/> but it cannot not be set. 
+        /// This is only used to support for interop with unmanaged callback.
+        /// </summary>
+        public IDisposable Shadow
+        {
+            get { throw new InvalidOperationException("Invalid access to Callback. This is used internally."); }
+            set { throw new InvalidOperationException("Invalid access to Callback. This is used internally."); }
         }
     }
 }
-

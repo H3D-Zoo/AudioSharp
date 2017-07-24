@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CSCore.Codecs.AAC;
-using CSCore.DMO;
 using CSCore.Win32;
+using SharpDX.MediaFoundation;
+using SharpDX;
 
 namespace CSCore.MediaFoundation
 {
@@ -17,14 +18,11 @@ namespace CSCore.MediaFoundation
     {
         private bool _disposed;
         private long _position;
-        private MFSinkWriter _sinkWriter;
+        private SinkWriter _sinkWriter;
         private int _sourceBytesPerSecond;
         private int _streamIndex;
-        private ComStream _targetBaseStream;
-        private MFMediaType _targetMediaType;
-        private MFByteStream _targetStream;
-
-        private bool _disposeBaseStream = true;
+        private MediaType _targetMediaType;
+        private ByteStream _targetStream;
 
         static MediaFoundationEncoder()
         {
@@ -42,7 +40,7 @@ namespace CSCore.MediaFoundation
         /// <param name="stream">Stream which will be used to store the encoded data.</param>
         /// <param name="targetMediaType">The format of the encoded data.</param>
         /// <param name="containerType">See container type. For a list of all available container types, see <see cref="TranscodeContainerTypes"/>.</param>
-        public MediaFoundationEncoder(Stream stream, MFMediaType inputMediaType, MFMediaType targetMediaType,
+        public MediaFoundationEncoder(Stream stream, SharpDX.MediaFoundation.MediaType inputMediaType, MediaType targetMediaType,
             Guid containerType)
         {
             if (stream == null)
@@ -74,17 +72,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     Gets the underlying stream which operates as encoding target.
-        /// </summary>
-        public Stream TargetBaseStream
-        {
-            get { return _targetBaseStream; }
-        }
-
-        /// <summary>
         ///     Gets the media type of the encoded data.
         /// </summary>
-        public MFMediaType OutputMediaType
+        public MediaType OutputMediaType
         {
             get { return _targetMediaType; }
         }
@@ -92,7 +82,7 @@ namespace CSCore.MediaFoundation
         /// <summary>
         ///     Gets the <see cref="MFSinkWriter" /> which is used to write to the <see cref="TargetStream"/>.
         /// </summary>
-        protected MFSinkWriter SinkWriter
+        protected SinkWriter SinkWriter
         {
             get { return _sinkWriter; }
             set { _sinkWriter = value; }
@@ -101,7 +91,7 @@ namespace CSCore.MediaFoundation
         /// <summary>
         ///     Gets the destination stream which is used to store the encoded audio data.
         /// </summary>
-        protected MFByteStream TargetStream
+        protected ByteStream TargetStream
         {
             get { return _targetStream; }
             set { _targetStream = value; }
@@ -145,20 +135,19 @@ namespace CSCore.MediaFoundation
         /// <param name="inputMediaType">Mediatype of the raw input data to encode.</param>
         /// <param name="targetMediaType">Mediatype of the encoded data.</param>
         /// <param name="containerType">Container type which should be used.</param>
-        protected void SetTargetStream(Stream stream, MFMediaType inputMediaType, MFMediaType targetMediaType,
+        protected void SetTargetStream(Stream stream, MediaType inputMediaType, MediaType targetMediaType,
             Guid containerType)
         {
-            MFAttributes attributes = null;
+            MediaAttributes attributes = null;
             try
             {
-                _targetBaseStream = new ComStream(stream, _disposeBaseStream);
-                _targetStream = MediaFoundationCore.IStreamToByteStream(_targetBaseStream);
+                _targetStream = new ByteStream(stream);
 
-                attributes = new MFAttributes(2);
-                attributes.SetUINT32(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
-                attributes.SetGuid(MediaFoundationAttributes.MF_TRANSCODE_CONTAINERTYPE, containerType);
+                attributes = new MediaAttributes(2);
+                attributes.Set(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
+                attributes.Set(MediaFoundationAttributes.MF_TRANSCODE_CONTAINERTYPE, containerType);
 
-                _sinkWriter = new MFSinkWriter(_targetStream, attributes);
+                _sinkWriter = SinkWriter.Create(_targetStream, attributes);
 
                 _streamIndex = _sinkWriter.AddStream(targetMediaType);
                 _sinkWriter.SetInputMediaType(_streamIndex, inputMediaType, null);
@@ -194,9 +183,9 @@ namespace CSCore.MediaFoundation
         private long WriteBlock(byte[] buffer, int offset, int count, int streamIndex, long positionInTicks,
             int sourceBytesPerSecond)
         {
-            using (var mfBuffer = new MFMediaBuffer(count))
+            using (var mfBuffer = MediaFactory.CreateMemoryBuffer(count))
             {
-                using (var sample = new MFSample())
+                using (var sample = MediaFactory.CreateSample())
                 {
                     sample.AddBuffer(mfBuffer);
 
@@ -242,9 +231,9 @@ namespace CSCore.MediaFoundation
                 if (_sinkWriter != null && !_sinkWriter.IsDisposed)
                 {
                     //thanks to martin48 (and naudio??) for providing the following source code (see http://cscore.codeplex.com/discussions/574280):
-                    MFSinkWriterStatistics statistics = _sinkWriter.GetStatistics(_streamIndex);
-                    if (statistics.ByteCountQueued > 0 || statistics.NumSamplesReceived > 0)
-                        _sinkWriter.FinalizeWriting();
+                    SinkWriterStatistics statistics = _sinkWriter.GetStatistics(_streamIndex);
+                    if (statistics.DwByteCountQueued > 0 || statistics.QwNumSamplesReceived > 0)
+                        _sinkWriter.Finalize();
 
                     _sinkWriter.Dispose();
                     _sinkWriter = null;
@@ -254,11 +243,6 @@ namespace CSCore.MediaFoundation
                     _targetStream.Flush();
                     _targetStream.Dispose();
                     _targetStream = null;
-                }
-                if (_targetBaseStream != null && !_targetBaseStream.IsClosed())
-                {
-                    _targetBaseStream.Flush();
-                    _targetBaseStream.Dispose();
                 }
             }
             _disposed = true;
@@ -291,7 +275,7 @@ namespace CSCore.MediaFoundation
             int read;
             while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
             {
-                Debug.WriteLine(String.Format("{0:#00.00}%", source.Position / (double) source.Length * 100));
+                Debug.WriteLine(String.Format("{0:#00.00}%", source.Position / (double)source.Length * 100));
                 encoder.Write(buffer, 0, read);
             }
         }
@@ -331,15 +315,15 @@ namespace CSCore.MediaFoundation
             if (targetStream.CanWrite != true)
                 throw new ArgumentException("Stream not writeable.", "targetStream");
 
-            MFMediaType targetMediaType = FindBestMediaType(AudioSubTypes.MpegLayer3, sourceFormat.SampleRate,
+            MediaType targetMediaType = FindBestMediaType(AudioSubTypes.MpegLayer3, sourceFormat.SampleRate,
                 sourceFormat.Channels, bitRate);
-            MFMediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
+            MediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
 
             if (targetMediaType == null)
                 throw new PlatformNotSupportedException("No MP3-Encoder was found.");
 
             return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType,
-                TranscodeContainerTypes.MFTranscodeContainerType_MP3) { _disposeBaseStream = false };
+                TranscodeContainerTypes.MFTranscodeContainerType_MP3);
         }
 
         /// <summary>
@@ -377,15 +361,15 @@ namespace CSCore.MediaFoundation
             if (targetStream.CanWrite != true)
                 throw new ArgumentException("Stream not writeable.", "targetStream");
 
-            MFMediaType targetMediaType = FindBestMediaType(AudioSubTypes.WindowsMediaAudio,
+            MediaType targetMediaType = FindBestMediaType(AudioSubTypes.WindowsMediaAudio,
                 sourceFormat.SampleRate, sourceFormat.Channels, bitRate);
-            MFMediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
+            MediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
 
             if (targetMediaType == null)
                 throw new PlatformNotSupportedException("No WMA-Encoder was found.");
 
             return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType,
-                TranscodeContainerTypes.MFTranscodeContainerType_ASF) { _disposeBaseStream = false };
+                TranscodeContainerTypes.MFTranscodeContainerType_ASF);
         }
 
         /// <summary>
@@ -417,7 +401,7 @@ namespace CSCore.MediaFoundation
             int bitRate = 192000)
         {
             return new AacEncoder(sourceFormat, targetStream, bitRate,
-                TranscodeContainerTypes.MFTranscodeContainerType_MPEG4) {_disposeBaseStream = false};
+                TranscodeContainerTypes.MFTranscodeContainerType_MPEG4);
         }
 
         /// <summary>
@@ -433,10 +417,10 @@ namespace CSCore.MediaFoundation
         ///     A <see cref="MediaType" /> which fits best the requested format. If no mediatype could be found the
         ///     <see cref="FindBestMediaType" /> method returns null.
         /// </returns>
-        protected static MFMediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
+        protected static MediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
         {
-            MFMediaType[] mediaTypes = GetEncoderMediaTypes(audioSubType);
-            IEnumerable<MFMediaType> n = mediaTypes.Where(x => x.SampleRate == sampleRate && x.Channels == channels);
+            MediaType[] mediaTypes = GetEncoderMediaTypes(audioSubType);
+            IEnumerable<MediaType> n = mediaTypes.Where(x => x.SampleRate == sampleRate && x.Channels == channels);
             var availableMediaTypes = n.Select(x => new
             {
                 mediaType = x,
@@ -447,47 +431,31 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Returns all <see cref="MFMediaType"/>s available for encoding the specified <paramref name="audioSubType"/>.
+        /// Returns all <see cref="MediaType"/>s available for encoding the specified <paramref name="audioSubType"/>.
         /// </summary>
-        /// <param name="audioSubType">The audio subtype to search available <see cref="MFMediaType"/>s for.</param>
-        /// <returns>Available <see cref="MFMediaType"/>s for the specified <paramref name="audioSubType"/>. If the <see cref="GetEncoderMediaTypes"/> returns an empty array, no encoder for the specified <paramref name="audioSubType"/> was found.</returns>
-        public static MFMediaType[] GetEncoderMediaTypes(Guid audioSubType)
+        /// <param name="audioSubType">The audio subtype to search available <see cref="MediaType"/>s for.</param>
+        /// <returns>Available <see cref="MediaType"/>s for the specified <paramref name="audioSubType"/>. If the <see cref="GetEncoderMediaTypes"/> returns an empty array, no encoder for the specified <paramref name="audioSubType"/> was found.</returns>
+        public static MediaType[] GetEncoderMediaTypes(Guid audioSubType)
         {
             try
             {
-                IMFCollection collection;
+                var collection = MediaFactory.TranscodeGetAudioOutputAvailableTypes(audioSubType, TransformEnumFlag.All, null);
 
-                MediaFoundationException.Try(
-                    NativeMethods.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All,
-                        IntPtr.Zero, out collection),
-                    "Interops",
-                    "MFTranscodeGetAudioOutputAvailableTypes");
-                try
+                int count;
+                collection.GetElementCount(out count);
+                MediaType[] mediaTypes = new MediaType[count];
+                for (int i = 0; i < count; i++)
                 {
-                    int count;
-                    MediaFoundationException.Try(collection.GetElementCount(out count), "IMFCollection",
-                        "GetElementCount");
-                    MFMediaType[] mediaTypes = new MFMediaType[count];
-                    for (int i = 0; i < count; i++)
-                    {
-                        IntPtr ptr;
-                        MediaFoundationException.Try(collection.GetElement(i, out ptr), "IMFCollection", "GetElement");
-
-                        mediaTypes[i] = new MFMediaType(ptr);
-                    }
-
-                    return mediaTypes;
+                    mediaTypes[i] = collection.GetElement(i).QueryInterface<MediaType>();
                 }
-                finally
-                {
-                    Marshal.ReleaseComObject(collection);
-                }
+
+                return mediaTypes;
             }
-            catch (MediaFoundationException ex)
+            catch (SharpDXException ex)
             {
-                if (ex.ErrorCode == unchecked((int)0xC00D36D5)) // MF_E_NOT_FOUND
+                if (ex.ResultCode == unchecked((int)0xC00D36D5)) // MF_E_NOT_FOUND
                 {
-                    return Enumerable.Empty<MFMediaType>().ToArray();
+                    return Enumerable.Empty<MediaType>().ToArray();
                 }
 
                 throw;
