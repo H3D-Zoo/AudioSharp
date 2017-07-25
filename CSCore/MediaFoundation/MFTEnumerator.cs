@@ -51,13 +51,9 @@ namespace CSCore.MediaFoundation
         /// <param name="outputType">Specifies an output media type to match. This parameter can be <c>null</c>. If <c>null</c>, all output types are matched.</param>
         /// <returns>An array of CLSIDs. For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms701774%28v=vs.85%29.aspx"/>.</returns>
         /// <remarks>On Windows 7/Windows Server 2008 R2, use the <see cref="EnumerateTransformsEx"/> method instead.</remarks>
-        public static unsafe Guid[] EnumerateTransforms(Guid category, TRegisterTypeInformation? inputType, TRegisterTypeInformation? outputType)
+        public static Guid[] EnumerateTransforms(Guid category, TRegisterTypeInformation? inputType, TRegisterTypeInformation? outputType)
         {
-            int count;
-            MediaFactory.TEnum(category, 0, inputType, outputType, null,null, out count);
-            Guid[] clsidMFTOut = new Guid[count];
-            MediaFactory.TEnum(category, 0, inputType, outputType, null, clsidMFTOut, out count);
-            return clsidMFTOut;
+            return MediaFactory.TEnum(category, 0, inputType, outputType, null);
         }
     }
 }

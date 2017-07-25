@@ -3090,10 +3090,12 @@ namespace SharpDX.MediaFoundation
         /// <msdn-id>ms701774</msdn-id>	
         /// <unmanaged>HRESULT MFTEnum([In] GUID guidCategory,[In] unsigned int Flags,[In, Optional] MFT_REGISTER_TYPE_INFO* pInputType,[In, Optional] MFT_REGISTER_TYPE_INFO* pOutputType,[In, Optional] IMFAttributes* pAttributes,[Out, Buffer] GUID** ppclsidMFT,[Out] unsigned int* pcMFTs)</unmanaged>	
         /// <unmanaged-short>MFTEnum</unmanaged-short>	
-        public static void TEnum(System.Guid guidCategory, int flags, SharpDX.MediaFoundation.TRegisterTypeInformation? inputTypeRef, SharpDX.MediaFoundation.TRegisterTypeInformation? outputTypeRef, SharpDX.MediaFoundation.MediaAttributes attributesRef, System.Guid[] clsidMFTOut, out int cMFTsRef)
+        public static Guid[] TEnum(System.Guid guidCategory, int flags, SharpDX.MediaFoundation.TRegisterTypeInformation? inputTypeRef, SharpDX.MediaFoundation.TRegisterTypeInformation? outputTypeRef, SharpDX.MediaFoundation.MediaAttributes attributesRef)
         {
             unsafe
             {
+                IntPtr ptr;
+                int cMFTsRef;
                 SharpDX.MediaFoundation.TRegisterTypeInformation inputTypeRef_;
                 if (inputTypeRef.HasValue)
                     inputTypeRef_ = inputTypeRef.Value;
@@ -3101,11 +3103,28 @@ namespace SharpDX.MediaFoundation
                 if (outputTypeRef.HasValue)
                     outputTypeRef_ = outputTypeRef.Value;
                 SharpDX.Result __result__;
-                fixed (void* clsidMFTOut_ = clsidMFTOut)
-                fixed (void* cMFTsRef_ = &cMFTsRef)
+                void* cMFTsRef_ = &cMFTsRef;
+                void* clsidMFTOut_ = &ptr;
                     __result__ =
                     MFTEnum_(guidCategory, flags, (inputTypeRef.HasValue) ? &inputTypeRef_ : (void*)IntPtr.Zero, (outputTypeRef.HasValue) ? &outputTypeRef_ : (void*)IntPtr.Zero, (void*)((attributesRef == null) ? IntPtr.Zero : attributesRef.NativePointer), clsidMFTOut_, cMFTsRef_);
                 __result__.CheckError();
+
+                try
+                {
+                    System.Guid[] clsidMFTOut = new Guid[cMFTsRef];
+
+                    Guid* p = (Guid*)ptr;
+                    for (int i = 0; i < cMFTsRef; i++)
+                    {
+                        clsidMFTOut[i] = p[i];
+                    }
+
+                    return clsidMFTOut;
+                }
+                finally
+                {
+                    Marshal.FreeCoTaskMem(ptr);
+                }
             }
         }
         [DllImport("Mfplat.dll", EntryPoint = "MFTEnum", CallingConvention = CallingConvention.StdCall)]

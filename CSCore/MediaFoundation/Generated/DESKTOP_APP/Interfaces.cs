@@ -39,6 +39,7 @@ namespace SharpDX.MediaFoundation
 #pragma warning disable 1587
 #pragma warning disable 1574
 #pragma warning disable 1570
+#pragma warning disable 0465
 
     /// <summary>	
     /// <p>Enables the application to defer the creation of an object. This interface is exposed by activation objects.</p>	

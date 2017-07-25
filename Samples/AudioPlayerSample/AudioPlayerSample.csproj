@@ -81,10 +81,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CSCore.Ffmpeg\CSCore.Ffmpeg.csproj">
-      <Project>{f4e6168a-b2cb-413c-ae0e-0d8b856b425e}</Project>
-      <Name>CSCore.Ffmpeg</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CSCore\CSCore.csproj">
       <Project>{c3dccfe3-dd3f-4eee-849b-33e355b1e064}</Project>
       <Name>CSCore</Name>
