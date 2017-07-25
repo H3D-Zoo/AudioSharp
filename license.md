@@ -1,5 +1,5 @@
 ## NOTE: ##
-This license does not apply to the [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg) project!
+This license does not apply to the [AudioSharp.Ffmpeg](https://github.com/H3D-Zoo/AudioSharp/tree/master/AudioSharp.FFmpeg) project!
 
 ## Microsoft Public License (Ms-PL) ##
 
