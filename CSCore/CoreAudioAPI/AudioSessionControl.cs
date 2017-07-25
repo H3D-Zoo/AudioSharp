@@ -175,7 +175,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &state)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -188,7 +188,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetDisplayNameNative(out string displayName)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            int result = LocalInterop.Calli(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
             if (result == 0 && ptr != IntPtr.Zero)
             {
                 displayName = Marshal.PtrToStringUni(ptr);
@@ -209,7 +209,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int SetDisplayNameNative(string displayName, Guid eventContext)
         {
             IntPtr p = displayName != null ? Marshal.StringToHGlobalUni(displayName) : IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, p.ToPointer(), &eventContext,
+            int result = LocalInterop.Calli(UnsafeBasePtr, p.ToPointer(), &eventContext,
                 ((void**) (*(void**) UnsafeBasePtr))[5]);
             Marshal.FreeHGlobal(p);
             return result;
@@ -224,7 +224,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetIconPathNative(out string iconPath)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[6]);
+            int result = LocalInterop.Calli(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[6]);
             if (result == 0 && ptr != IntPtr.Zero)
             {
                 iconPath = Marshal.PtrToStringUni(ptr);
@@ -245,7 +245,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int SetIconPathNative(string iconPath, Guid eventContext)
         {
             IntPtr p = iconPath != null ? Marshal.StringToHGlobalUni(iconPath) : IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, p.ToPointer(), &eventContext,
+            int result = LocalInterop.Calli(UnsafeBasePtr, p.ToPointer(), &eventContext,
                 ((void**) (*(void**) UnsafeBasePtr))[7]);
             Marshal.FreeHGlobal(p);
             return result;
@@ -262,7 +262,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &groupingParam)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[8]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[8]);
             }
         }
 
@@ -276,7 +276,7 @@ namespace CSCore.CoreAudioAPI
         /// <remarks>For some more information about grouping parameters, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370848(v=vs.85).aspx"/>.</remarks>        
         public unsafe int SetGroupingParamNative(Guid groupingParam, Guid eventContext)
         {
-            return InteropCall.CallI(UnsafeBasePtr, &groupingParam, &eventContext,
+            return LocalInterop.Calli(UnsafeBasePtr, &groupingParam, &eventContext,
                 ((void**) (*(void**) UnsafeBasePtr))[9]);
         }
 
@@ -296,7 +296,7 @@ namespace CSCore.CoreAudioAPI
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCall.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[10]);
+                    result = LocalInterop.Calli(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[10]);
                 }
                 finally
                 {
@@ -335,7 +335,7 @@ namespace CSCore.CoreAudioAPI
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCall.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[11]);
+                    result = LocalInterop.Calli(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[11]);
                 }
                 finally
                 {

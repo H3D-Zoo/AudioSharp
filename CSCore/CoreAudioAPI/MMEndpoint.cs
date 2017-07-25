@@ -65,7 +65,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &dataFlow)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) *(void**) UnsafeBasePtr)[3]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) *(void**) UnsafeBasePtr)[3]);
             }
         }
     }

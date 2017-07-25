@@ -172,7 +172,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetDefaultAudioEndpointNative(DataFlow dataFlow, Role role, out IntPtr device)
         {
             IntPtr pdevice;
-            int result = InteropCall.CallI(UnsafeBasePtr, unchecked(dataFlow), unchecked(role), &pdevice,
+            int result = LocalInterop.Calli(UnsafeBasePtr, unchecked(dataFlow), unchecked(role), &pdevice,
                 ((void**) (*(void**) UnsafeBasePtr))[4]);
             device = pdevice;
             return result;
@@ -203,7 +203,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int EnumAudioEndpointsNative(DataFlow dataFlow, DeviceState stateMask, out IntPtr collection)
         {
             IntPtr pcollection;
-            int result = InteropCall.CallI(UnsafeBasePtr, unchecked(dataFlow), unchecked(stateMask), &pcollection,
+            int result = LocalInterop.Calli(UnsafeBasePtr, unchecked(dataFlow), unchecked(stateMask), &pcollection,
                 ((void**) (*(void**) UnsafeBasePtr))[3]);
             collection = pcollection;
             return result;
@@ -233,7 +233,7 @@ namespace CSCore.CoreAudioAPI
             try
             {
                 IntPtr pdevice;
-                int result = InteropCall.CallI(UnsafeBasePtr, pid.ToPointer(), &pdevice,
+                int result = LocalInterop.Calli(UnsafeBasePtr, pid.ToPointer(), &pdevice,
                     ((void**) (*(void**) UnsafeBasePtr))[5]);
                 device = pdevice;
                 return result;
@@ -264,7 +264,7 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (!_notificationClients.Contains(notificationClient))
             {
-                result = InteropCall.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[6]);
+                result = LocalInterop.Calli(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[6]);
                 _notificationClients.Add(notificationClient);
             }
             return result;
@@ -290,7 +290,7 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (_notificationClients.Contains(notificationClient))
             {
-                result = InteropCall.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[7]);
+                result = LocalInterop.Calli(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[7]);
                 _notificationClients.Remove(notificationClient);
             }
             return result;

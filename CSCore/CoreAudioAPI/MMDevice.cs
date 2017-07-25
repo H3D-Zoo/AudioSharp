@@ -126,7 +126,7 @@ namespace CSCore.CoreAudioAPI
             pinterface = IntPtr.Zero;
             fixed (void* ppinterface = &pinterface)
             {
-                var result = InteropCall.CallI(UnsafeBasePtr, &iid, (uint) context, activationParams,
+                var result = LocalInterop.Calli(UnsafeBasePtr, &iid, (uint) context, activationParams,
                     new IntPtr(ppinterface), ((void**) (*(void**) UnsafeBasePtr))[3]);
                 return result;
             }
@@ -170,7 +170,7 @@ namespace CSCore.CoreAudioAPI
             propertyStore = IntPtr.Zero;
             fixed (void* pps = &propertyStore)
             {
-                return InteropCall.CallI(UnsafeBasePtr, unchecked(storageAccess), pps,
+                return LocalInterop.Calli(UnsafeBasePtr, unchecked(storageAccess), pps,
                     ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
@@ -185,7 +185,7 @@ namespace CSCore.CoreAudioAPI
             IntPtr pdeviceid = IntPtr.Zero;
             deviceid = null;
 
-            var err = InteropCall.CallI(UnsafeBasePtr, &pdeviceid, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            var err = LocalInterop.Calli(UnsafeBasePtr, &pdeviceid, ((void**) (*(void**) UnsafeBasePtr))[5]);
             if (err == 0 && pdeviceid != IntPtr.Zero)
             {
                 deviceid = Marshal.PtrToStringUni(pdeviceid);
@@ -204,7 +204,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pstate = &state)
             {
-                return InteropCall.CallI(UnsafeBasePtr, unchecked(pstate), ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return LocalInterop.Calli(UnsafeBasePtr, unchecked(pstate), ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 

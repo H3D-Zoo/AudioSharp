@@ -198,7 +198,7 @@ namespace CSCore.Win32
         {
             fixed (void* ppc = &propertyCount)
             {
-                return InteropCall.CallI(UnsafeBasePtr, ppc, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.Calli(UnsafeBasePtr, ppc, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -207,7 +207,7 @@ namespace CSCore.Win32
             propertyKey = new PropertyKey();
             fixed (void* ppk = &propertyKey)
             {
-                return InteropCall.CallI(UnsafeBasePtr, propertyIndex, ppk, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                return LocalInterop.Calli(UnsafeBasePtr, propertyIndex, ppk, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -215,18 +215,18 @@ namespace CSCore.Win32
         {
             fixed (void* pvalue = &value)
             {
-                return InteropCall.CallI(UnsafeBasePtr, &key, pvalue, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return LocalInterop.Calli(UnsafeBasePtr, &key, pvalue, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
         private unsafe int SetValueNative(PropertyKey key, PropertyVariant value)
         {
-            return InteropCall.CallI(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[6]);
+            return LocalInterop.Calli(UnsafeBasePtr, &key, &value, ((void**) (*(void**) UnsafeBasePtr))[6]);
         }
 
         private unsafe int CommitNative()
         {
-            return InteropCall.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[7]);
+            return LocalInterop.Calli(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[7]);
         }
 
         /// <summary>

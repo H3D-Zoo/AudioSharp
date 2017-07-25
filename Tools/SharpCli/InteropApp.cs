@@ -748,6 +748,7 @@ namespace SharpCli
         public bool PatchFile(string file)
         {
             file = Path.Combine(Environment.CurrentDirectory, file);
+            var bak_bytes = File.ReadAllBytes(file);
 
             var fileTime = new FileTime(file);
             //var fileTimeInteropBuilder = new FileTime(Assembly.GetExecutingAssembly().Location);
@@ -824,7 +825,15 @@ namespace SharpCli
                 assembly.MainModule.Types.Remove(type);
 
             var outputFilePath = file;
-            assembly.Write(outputFilePath, writerParameters);
+            try
+            {
+                assembly.Write(outputFilePath, writerParameters);
+            }
+            catch (Exception)
+            {
+                File.WriteAllBytes(file, bak_bytes);
+                throw;
+            }
 
             fileTime = new FileTime(file);
             // Update Check file

@@ -82,7 +82,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pbuffer = &buffer)
             {
-                return InteropCall.CallI(UnsafeBasePtr, unchecked(numFramesRequested), pbuffer,
+                return LocalInterop.Calli(UnsafeBasePtr, unchecked(numFramesRequested), pbuffer,
                     ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
@@ -100,7 +100,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int ReleaseBufferNative(int numFramesWritten, AudioClientBufferFlags flags)
         {
-            return InteropCall.CallI(UnsafeBasePtr, unchecked(numFramesWritten), unchecked(flags),
+            return LocalInterop.Calli(UnsafeBasePtr, unchecked(numFramesWritten), unchecked(flags),
                 ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
 

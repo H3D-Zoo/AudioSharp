@@ -64,7 +64,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p0 = &devicePosition, p1 = &qpcPosition)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.Calli(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 

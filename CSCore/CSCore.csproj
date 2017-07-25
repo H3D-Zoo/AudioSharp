@@ -694,9 +694,7 @@
   <PropertyGroup>
     <PostBuildEvent>
       @echo off &amp; setLocal EnableDELAYedeXpansion
-      chcp 65001
-
-      set errorCode=0
+  set errorCode=0
 
       set target=$(TargetPath)
       set project=$(ProjectPath)

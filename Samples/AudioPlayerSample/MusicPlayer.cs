@@ -83,7 +83,7 @@ namespace AudioPlayerSample
                     .ToSampleSource()
                     .ToMono()
                     .ToWaveSource();
-            _soundOut = new DirectSoundOut() {Latency = 100};
+            _soundOut = new WasapiOut() {Latency = 100};
             _soundOut.Initialize(_waveSource);
 			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }

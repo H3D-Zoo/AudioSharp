@@ -79,7 +79,7 @@ namespace CSCore.CoreAudioAPI
             {
                 fixed (void* p2 = &devicePosition, p3 = &qpcPosition)
                 {
-                    return InteropCall.CallI(UnsafeBasePtr, d, p0, p1, p2, p3, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                    return LocalInterop.Calli(UnsafeBasePtr, d, p0, p1, p2, p3, ((void**) (*(void**) UnsafeBasePtr))[3]);
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int ReleaseBufferNative(int framesRead)
         {
-            return InteropCall.CallI(UnsafeBasePtr, framesRead, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            return LocalInterop.Calli(UnsafeBasePtr, framesRead, ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &numFramesInNextPacket)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 

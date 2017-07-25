@@ -130,7 +130,7 @@ namespace CSCore.CoreAudioAPI
         {
             sessionId = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[12]);
+            int result = LocalInterop.Calli(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[12]);
             try
             {
                 if (result == 0 && ptr != IntPtr.Zero)
@@ -154,7 +154,7 @@ namespace CSCore.CoreAudioAPI
         {
             sessionInstanceId = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCall.CallI(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[13]);
+            int result = LocalInterop.Calli(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[13]);
             if (result == 0 && ptr != IntPtr.Zero)
             {
                 sessionInstanceId = Marshal.PtrToStringUni(ptr);
@@ -174,7 +174,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &processId)
             {
-                return InteropCall.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
@@ -185,7 +185,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT; S_OK = true, S_FALSE = false</returns>
         public unsafe int IsSystemSoundSessionNative()
         {
-            return InteropCall.CallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[15]);
+            return LocalInterop.Calli(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[15]);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int SetDuckingPreferenceNative(NativeBool enableSystemAutoDucking)
         {
-            return InteropCall.CallI(UnsafeBasePtr, enableSystemAutoDucking, ((void**) (*(void**) UnsafeBasePtr))[16]);
+            return LocalInterop.Calli(UnsafeBasePtr, enableSystemAutoDucking, ((void**) (*(void**) UnsafeBasePtr))[16]);
         }
 
         /// <summary>
