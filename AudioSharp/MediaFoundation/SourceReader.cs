@@ -80,12 +80,8 @@ namespace SharpDX.MediaFoundation
         /// <msdn-id>dd388106</msdn-id>	
         /// <unmanaged>HRESULT MFCreateSourceReaderFromByteStream([In] IMFByteStream* pByteStream,[In, Optional] IMFAttributes* pAttributes,[Out, Fast] IMFSourceReader** ppSourceReader)</unmanaged>	
         /// <unmanaged-short>MFCreateSourceReaderFromByteStream</unmanaged-short>	
-        public SourceReader(Stream buffer, MediaAttributes attributes = null)
+        public SourceReader(ByteStream byteStream,MediaAttributes attributes = null)
         {
-            byteStream = new ByteStream(buffer);
-
-            int capabilities = byteStream.Capabilities;
-
             MediaFactory.CreateSourceReaderFromByteStream(byteStream.NativePointer, attributes, this);
         }
 
@@ -347,7 +343,7 @@ namespace SharpDX.MediaFoundation
             var value = GetPresentationAttribute(SourceReaderIndex.MediaSource,
                 MediaFoundationAttributes.MF_SOURCE_READER_MEDIASOURCE_CHARACTERISTICS);
 
-            return (int)value.Value;
+            return (int)(uint)value.Value;
         }
 
         /// <summary>

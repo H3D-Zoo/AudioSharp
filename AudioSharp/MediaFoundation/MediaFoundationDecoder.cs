@@ -235,7 +235,7 @@ namespace AudioSharp.MediaFoundation
 
         private SourceReader Initialize(ByteStream byteStream)
         {
-            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream.NativePointer, null));
+            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream, null));
         }
 
         private SourceReader Initialize(SourceReader reader)
@@ -307,7 +307,7 @@ namespace AudioSharp.MediaFoundation
                          reader.GetPresentationAttribute(SourceReaderIndex.MediaSource,
                              MediaFoundationAttributes.MF_PD_DURATION);
                         //bug: still, depending on the decoder, this returns imprecise values.
-                        return NanoSecond100UnitsToBytes((long)value.Value);
+                        return NanoSecond100UnitsToBytes((long)(ulong)value.Value);
                 }
                 catch (Exception)
                 {

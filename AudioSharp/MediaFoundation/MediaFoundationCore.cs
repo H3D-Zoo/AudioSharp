@@ -63,11 +63,9 @@ namespace AudioSharp.MediaFoundation
         }
 
 
-        public static SourceReader CreateSourceReaderFromByteStream(IntPtr byteStream, MediaAttributes attributes)
+        public static SourceReader CreateSourceReaderFromByteStream(ByteStream byteStream, MediaAttributes attributes)
         {
-            SourceReader sourceReaderOut = null;
-            MediaFactory.CreateSourceReaderFromByteStream(byteStream, attributes, sourceReaderOut);
-            return sourceReaderOut;
+            return new SourceReader(byteStream, attributes);
         }
 
         public static SourceReader CreateSourceReaderFromUrl(string url)
