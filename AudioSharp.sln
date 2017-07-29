@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayerSample", "Sample
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{B684D269-4181-4770-9485-727A3985A447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XAudio2Playback", "Samples\XAudio2Playback\XAudio2Playback.csproj", "{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,22 @@ Global
 		{000B0B0B-A12D-4EED-A261-7F95422E386A}.Release|Win32.Build.0 = Release|Any CPU
 		{000B0B0B-A12D-4EED-A261-7F95422E386A}.Release|x64.ActiveCfg = Release|Any CPU
 		{000B0B0B-A12D-4EED-A261-7F95422E386A}.Release|x64.Build.0 = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|Win32.Build.0 = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|Win32.Build.0 = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,5 +116,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4E2D9A17-2195-4A51-AAE3-924517440293} = {1F24CB15-2CD3-432A-BE46-65CCE8A9DCF3}
 		{000B0B0B-A12D-4EED-A261-7F95422E386A} = {B684D269-4181-4770-9485-727A3985A447}
+		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04} = {B684D269-4181-4770-9485-727A3985A447}
 	EndGlobalSection
 EndGlobal

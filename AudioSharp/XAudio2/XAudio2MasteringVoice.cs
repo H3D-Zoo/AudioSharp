@@ -45,7 +45,7 @@ namespace AudioSharp.XAudio2
 
             fixed (void* p = &channelMask)
             {
-                return InteropCall.ABCDE(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[19]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[19]);
             }
         }
     }

@@ -658,6 +658,7 @@
     <Compile Include="Win32\WaveFormatMarshaler.cs" />
     <Compile Include="WaveAggregatorBase.cs" />
     <Compile Include="WaveFormat.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Codecs\FLAC\FlacFrame_GetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
