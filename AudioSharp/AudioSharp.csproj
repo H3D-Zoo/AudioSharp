@@ -399,6 +399,7 @@
     <Compile Include="SoundOut\WaveOut.cs" />
     <Compile Include="SoundOut\WaveOutBuffer.cs" />
     <Compile Include="SoundOut\WaveOutDevice.cs" />
+    <Compile Include="SoundOut\XAudio2Out.cs" />
     <Compile Include="StoppedEventArgs.cs" />
     <Compile Include="Streams\Blob.cs" />
     <Compile Include="Streams\CachedSoundSource.cs" />
@@ -658,7 +659,6 @@
     <Compile Include="Win32\WaveFormatMarshaler.cs" />
     <Compile Include="WaveAggregatorBase.cs" />
     <Compile Include="WaveFormat.cs" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Codecs\FLAC\FlacFrame_GetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
