@@ -123,7 +123,7 @@ namespace AudioSharp.XAudio2
         {
             fixed (void* p = &deviceCount)
             {
-                return InteropCall.ABCDE(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return LocalInterop.Calli(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -153,7 +153,7 @@ namespace AudioSharp.XAudio2
             try
             {
                 deviceDetails = default(DeviceDetails);
-                int result = InteropCall.XCallI(UnsafeBasePtr, deviceIndex, ptr.ToPointer(),
+                int result = LocalInterop.Calli(UnsafeBasePtr, deviceIndex, ptr.ToPointer(),
                     ((void**) (*(void**) UnsafeBasePtr))[4]);
 
                 deviceDetails = (DeviceDetails) Marshal.PtrToStructure(ptr, typeof (DeviceDetails));
@@ -190,7 +190,7 @@ namespace AudioSharp.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int InitializeNative(int flags, XAudio2Processor processor)
         {
-            return InteropCall.XCallI(UnsafeBasePtr, flags, processor, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            return LocalInterop.Calli(UnsafeBasePtr, flags, processor, ((void**) (*(void**) UnsafeBasePtr))[5]);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace AudioSharp.XAudio2
             }
             try
             {
-                return InteropCall.ABCDE(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return LocalInterop.Calli(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
             finally
             {
@@ -256,7 +256,7 @@ namespace AudioSharp.XAudio2
             }
             try
             {
-                InteropCall.ABCDE(UnsafeBasePtr, (void*) ptr, ((void**) (*(void**) UnsafeBasePtr))[7]);
+                LocalInterop.Calli(UnsafeBasePtr, (void*) ptr, ((void**) (*(void**) UnsafeBasePtr))[7]);
             }
             finally
             {
@@ -334,7 +334,7 @@ namespace AudioSharp.XAudio2
             {
                 fixed (void* ptr = &pSourceVoice)
                 {
-                    return InteropCall.XCallI(UnsafeBasePtr,
+                    return LocalInterop.Calli(UnsafeBasePtr,
                         ptr,
                         sourceFormat,
                         flags,
@@ -401,7 +401,7 @@ namespace AudioSharp.XAudio2
             EffectChain value1 = effectChain.HasValue ? effectChain.Value : new EffectChain();
             fixed (void* ptr = &pSubmixVoice)
             {
-                return InteropCall.XCallI(UnsafeBasePtr,
+                return LocalInterop.Calli(UnsafeBasePtr,
                     ptr,
                     inputChannels,
                     inputSampleRate,
@@ -453,7 +453,7 @@ namespace AudioSharp.XAudio2
 
             fixed (void* ptr = &pMasteringVoice)
             {
-                return InteropCall.XCallI(
+                return LocalInterop.Calli(
                     UnsafeBasePtr,
                     ptr,
                     inputChannels,
@@ -472,7 +472,7 @@ namespace AudioSharp.XAudio2
         /// <returns>HRESULT</returns>
         public override unsafe int StartEngineNative()
         {
-            return InteropCall.XCallI(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[11]);
+            return LocalInterop.Calli(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[11]);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace AudioSharp.XAudio2
         /// </summary>
         public override unsafe void StopEngine()
         {
-            InteropCall.CallI7(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[12]);
+            LocalInterop.Calli7(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[12]);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace AudioSharp.XAudio2
         /// <returns>HRESULT</returns>
         public override unsafe int CommitChangesNative(int operationSet)
         {
-            return InteropCall.XCallI(UnsafeBasePtr, operationSet, ((void**) (*(void**) UnsafeBasePtr))[13]);
+            return LocalInterop.Calli(UnsafeBasePtr, operationSet, ((void**) (*(void**) UnsafeBasePtr))[13]);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace AudioSharp.XAudio2
             performanceData = default(PerformanceData); //initialize performanceData to fix compiler error
             fixed (void* p = &performanceData)
             {
-                InteropCall.CallI5(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
+                LocalInterop.Calli5(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
@@ -521,7 +521,7 @@ namespace AudioSharp.XAudio2
         /// <returns>HRESULT</returns>
         public override unsafe void SetDebugConfigurationNative(DebugConfiguration debugConfiguration, IntPtr reserved)
         {
-            InteropCall.CallI4(UnsafeBasePtr, &debugConfiguration, reserved.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[15]);
+            LocalInterop.Calli4(UnsafeBasePtr, &debugConfiguration, reserved.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[15]);
         }
 
         /// <summary>
