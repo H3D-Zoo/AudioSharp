@@ -31,6 +31,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using ComTypes = System.Runtime.InteropServices.ComTypes;
+
 namespace SharpDX.MediaFoundation
 {
 
@@ -3105,8 +3107,8 @@ namespace SharpDX.MediaFoundation
                 SharpDX.Result __result__;
                 void* cMFTsRef_ = &cMFTsRef;
                 void* clsidMFTOut_ = &ptr;
-                    __result__ =
-                    MFTEnum_(guidCategory, flags, (inputTypeRef.HasValue) ? &inputTypeRef_ : (void*)IntPtr.Zero, (outputTypeRef.HasValue) ? &outputTypeRef_ : (void*)IntPtr.Zero, (void*)((attributesRef == null) ? IntPtr.Zero : attributesRef.NativePointer), clsidMFTOut_, cMFTsRef_);
+                __result__ =
+                MFTEnum_(guidCategory, flags, (inputTypeRef.HasValue) ? &inputTypeRef_ : (void*)IntPtr.Zero, (outputTypeRef.HasValue) ? &outputTypeRef_ : (void*)IntPtr.Zero, (void*)((attributesRef == null) ? IntPtr.Zero : attributesRef.NativePointer), clsidMFTOut_, cMFTsRef_);
                 __result__.CheckError();
 
                 try
@@ -5962,7 +5964,7 @@ namespace SharpDX.MediaFoundation
         /// <msdn-id>dd388095</msdn-id>	
         /// <unmanaged>HRESULT MFCreateMFByteStreamOnStream([In] IStream* pStream,[Out] IMFByteStream** ppByteStream)</unmanaged>	
         /// <unmanaged-short>MFCreateMFByteStreamOnStream</unmanaged-short>	
-        public static void CreateMFByteStreamOnStream(System.IntPtr streamRef, out SharpDX.MediaFoundation.IByteStream byteStreamOut)
+        public static void CreateMFByteStreamOnStream(System.IntPtr streamRef, SharpDX.MediaFoundation.IByteStream byteStreamOut)
         {
             unsafe
             {
@@ -5970,12 +5972,23 @@ namespace SharpDX.MediaFoundation
                 SharpDX.Result __result__;
                 __result__ =
                 MFCreateMFByteStreamOnStream_((void*)streamRef, &byteStreamOut_);
-                byteStreamOut = (byteStreamOut_ == IntPtr.Zero) ? null : new SharpDX.MediaFoundation.ByteStream(byteStreamOut_);
+                ((SharpDX.MediaFoundation.ByteStream)byteStreamOut).NativePointer = byteStreamOut_;
                 __result__.CheckError();
             }
         }
         [DllImport("Mfplat.dll", EntryPoint = "MFCreateMFByteStreamOnStream", CallingConvention = CallingConvention.StdCall)]
         private unsafe static extern int MFCreateMFByteStreamOnStream_(void* arg0, void* arg1);
+
+        [DllImport("Mfplat.dll", EntryPoint = "MFCreateMFByteStreamOnStream", CallingConvention = CallingConvention.StdCall)]
+        private unsafe static extern int MFCreateMFByteStreamOnStream_([MarshalAs(UnmanagedType.Interface)] ComTypes.IStream stream, out IntPtr bytestream);
+
+        public static void CreateMFByteStreamOnStream(ComTypes.IStream stream, out IntPtr result)
+        {
+            SharpDX.Result __result__;
+            __result__ =
+                        MFCreateMFByteStreamOnStream_(stream, out result);
+            __result__.CheckError();
+        }
 
         /// <summary>	
         /// <p>Returns an <strong><see cref="SharpDX.Win32.IStream"/></strong> reference that wraps a Microsoft Media Foundation byte stream.</p>	
@@ -6004,6 +6017,8 @@ namespace SharpDX.MediaFoundation
         }
         [DllImport("Mfplat.dll", EntryPoint = "MFCreateStreamOnMFByteStream", CallingConvention = CallingConvention.StdCall)]
         private unsafe static extern int MFCreateStreamOnMFByteStream_(void* arg0, void* arg1);
+
+        
 
         /// <summary>	
         /// <p>Creates a Microsoft Media Foundation byte stream that wraps an <strong>IRandomAccessStream</strong> object.</p>	

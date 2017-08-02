@@ -141,7 +141,9 @@ namespace AudioSharp.MediaFoundation
             MediaAttributes attributes = null;
             try
             {
-                _targetStream = new ByteStream(stream);
+                var buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
+                _targetStream = new ByteStream(buffer);
 
                 attributes = new MediaAttributes(2);
                 attributes.Set(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);

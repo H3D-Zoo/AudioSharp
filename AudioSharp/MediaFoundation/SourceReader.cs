@@ -65,8 +65,7 @@ namespace SharpDX.MediaFoundation
         /// <unmanaged-short>MFCreateSourceReaderFromByteStream</unmanaged-short>	
         public SourceReader(byte[] buffer, MediaAttributes attributes = null)
         {
-            byteStream = new ByteStream(new MemoryStream(buffer));
-            MediaFactory.CreateSourceReaderFromByteStream(byteStream.NativePointer, attributes, this);
+            throw new NotImplementedException();
         }
 
         /// <summary>	

@@ -23,6 +23,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using SharpDX.Mathematics.Interop;
 using SharpDX.Win32;
+using ComTypes = System.Runtime.InteropServices.ComTypes;
+
 
 #if STORE_APP
 using Windows.Storage.Streams;
@@ -40,13 +42,16 @@ namespace SharpDX.MediaFoundation
         private ComStreamProxy streamProxy;
         private ComObject randomAccessStreamCom;
 
+        private ComTypes.IStream istream;
+
+
         /// <summary>
         /// Instantiates a new instance <see cref="ByteStream"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <msdn-id>hh162754</msdn-id>	
         /// <unmanaged>HRESULT MFCreateMFByteStreamOnStreamEx([In] IUnknown* punkStream,[Out] IMFByteStream** ppByteStream)</unmanaged>	
         /// <unmanaged-short>MFCreateMFByteStreamOnStreamEx</unmanaged-short>	
-        public ByteStream(Stream sourceStream)
+        protected ByteStream(Stream sourceStream)
         {
             this.sourceStream = sourceStream;
 #if STORE_APP
@@ -55,11 +60,10 @@ namespace SharpDX.MediaFoundation
             MediaFactory.CreateMFByteStreamOnStreamEx(randomAccessStreamCom, this);
 #else
             streamProxy = new ComStreamProxy(sourceStream);
-            IByteStream localStream;
-            MediaFactory.CreateMFByteStreamOnStream(ComStream.ToIntPtr(streamProxy), out localStream);
-            NativePointer = ((ByteStream) localStream).NativePointer;
+            MediaFactory.CreateMFByteStreamOnStream(ComStream.ToIntPtr(streamProxy),this);
 #endif
         }
+
 
         /// <summary>
         /// Instantiates a new instance <see cref="ByteStream"/> from a <see cref="Stream"/>.
@@ -67,10 +71,19 @@ namespace SharpDX.MediaFoundation
         /// <msdn-id>hh162754</msdn-id>	
         /// <unmanaged>HRESULT MFCreateMFByteStreamOnStreamEx([In] IUnknown* punkStream,[Out] IMFByteStream** ppByteStream)</unmanaged>	
         /// <unmanaged-short>MFCreateMFByteStreamOnStreamEx</unmanaged-short>	
-        public ByteStream(byte[] sourceStream) : this(new MemoryStream(sourceStream))
+        public ByteStream(byte[] sourceStream) 
         {
+            var hglobal =  Marshal.AllocHGlobal(sourceStream.Length);
+            Marshal.Copy(sourceStream,0,hglobal,sourceStream.Length);
+            CreateStreamOnHGlobal(hglobal, true, out istream);
+            IntPtr result;
+            MediaFactory.CreateMFByteStreamOnStream(istream, out result);
+            NativePointer = result;
         }
 
+
+        [System.Runtime.InteropServices.DllImport("OLE32.DLL", EntryPoint = "CreateStreamOnHGlobal")] // Create a COM stream from a pointer in unmanaged memory
+        extern public static int CreateStreamOnHGlobal(IntPtr ptr, bool delete, out System.Runtime.InteropServices.ComTypes.IStream pOutStm);
 #if STORE_APP
         /// <summary>
         /// Instantiates a new instance <see cref="ByteStream"/> from a <see cref="Stream"/>.
@@ -95,9 +108,7 @@ namespace SharpDX.MediaFoundation
         public ByteStream(ComStream sourceStream)
         {
             this.comStream = sourceStream;
-            IByteStream localStream;
-            MediaFactory.CreateMFByteStreamOnStream(sourceStream.NativePointer, out localStream);
-            NativePointer = ((ByteStream)localStream).NativePointer;
+            MediaFactory.CreateMFByteStreamOnStream(sourceStream.NativePointer, this);
         }
         /// <summary>	
         /// <p><strong>Applies to: </strong>desktop apps | Metro style apps</p><p> Retrieves the characteristics of the byte stream. </p>	

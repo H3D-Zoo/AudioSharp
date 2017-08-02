@@ -149,7 +149,6 @@ namespace AudioSharp.Codecs
             IWaveSource source = null;
             if (File.Exists(filename))
             {
-                Stream stream = File.OpenRead(filename);
                 try
                 {
                     foreach (var codecEntry in _codecs)
@@ -160,7 +159,7 @@ namespace AudioSharp.Codecs
                                 codecEntry.Value.FileExtensions.Any(
                                     x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
                             {
-                                source = codecEntry.Value.GetCodecAction(stream);
+                                source = codecEntry.Value.GetCodecAction(filename);
                                 if (source != null)
                                     break;
                             }
@@ -175,11 +174,10 @@ namespace AudioSharp.Codecs
                 {
                     if (source == null)
                     {
-                        stream.Dispose();
                     }
                     else
                     {
-                        source = new DisposeFileStreamSource(source, stream);
+                        source = new DisposeFileStreamSource(source, null);
                     }
                 }
             }
@@ -219,11 +217,6 @@ namespace AudioSharp.Codecs
             {
                 throw new NotSupportedException("Codec not supported.", e);
             }
-        }
-
-        internal IWaveSource GetCodec(Stream stream, object key)
-        {
-            return _codecs[key].GetCodecAction(stream);
         }
 
         private IWaveSource OpenWebStream(string url)

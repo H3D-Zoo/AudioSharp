@@ -25,7 +25,6 @@ namespace AudioSharp.MediaFoundation
         private long _position;
 
         private SourceReader _reader;
-        private Stream _stream;
         private WaveFormat _waveFormat;
         private bool _positionChanged;
 
@@ -45,7 +44,7 @@ namespace AudioSharp.MediaFoundation
 
             _hasFixedLength = true;
 
-            _reader = Initialize(MediaFoundationCore.CreateSourceReaderFromUrl(url));
+            _reader = Initialize(new SourceReader(url));
         }
 
         /// <summary>
@@ -59,8 +58,9 @@ namespace AudioSharp.MediaFoundation
             if (!stream.CanRead)
                 throw new ArgumentException("Stream is not readable.", "stream");
 
-            _stream = stream;
-            _byteStream = new ByteStream(stream); 
+            var buffer = new byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
+            _byteStream = new ByteStream(buffer); 
             _reader = Initialize(_byteStream);
         }
 
@@ -234,7 +234,7 @@ namespace AudioSharp.MediaFoundation
         }
 
         private SourceReader Initialize(ByteStream byteStream)
-        {
+        { 
             return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream, null));
         }
 
@@ -386,11 +386,6 @@ namespace AudioSharp.MediaFoundation
             {
                 _byteStream.Dispose();
                 _byteStream = null;
-            }
-            if (_stream != null)
-            {
-                _stream.Dispose();
-                _stream = null;
             }
         }
 

@@ -68,13 +68,6 @@ namespace AudioSharp.MediaFoundation
             return new SourceReader(byteStream, attributes);
         }
 
-        public static SourceReader CreateSourceReaderFromUrl(string url)
-        {
-            SourceReader sourceReaderOut = null;
-            MediaFactory.CreateSourceReaderFromURL(url, null, sourceReaderOut);
-            return sourceReaderOut;
-        }
-
         private static bool _isstarted;
 
         public static void Startup()
