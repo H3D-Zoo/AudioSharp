@@ -124,9 +124,7 @@
     <Compile Include="Codecs\AIFF\FormatVersionChunk.cs" />
     <Compile Include="Codecs\AIFF\SoundDataChunk.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
-    <Compile Include="Codecs\AAC\AacDecoder.cs" />
     <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
-    <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
@@ -168,8 +166,6 @@
     </Compile>
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs" />
     <Compile Include="Codecs\GetCodecAction.cs" />
-    <Compile Include="Codecs\MP1\Mp1Decoder.cs" />
-    <Compile Include="Codecs\MP2\Mp2Decoder.cs" />
     <Compile Include="Codecs\MP3\DmoMp3Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
     <Compile Include="Codecs\MP3\Mp3ChannelMode.cs" />
@@ -177,14 +173,12 @@
     <Compile Include="Codecs\MP3\Mp3FormatId.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
     <Compile Include="Codecs\MP3\Mp3FrameInfo.cs" />
-    <Compile Include="Codecs\MP3\Mp3MediafoundationDecoder.cs" />
     <Compile Include="Codecs\MP3\Mp3PaddingFlags.cs" />
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\MpegLayer.cs" />
     <Compile Include="Codecs\MP3\MpegVersion.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
-    <Compile Include="Codecs\WMA\WmaDecoder.cs" />
     <Compile Include="Collections\EqualityComparer.cs" />
     <Compile Include="COM\ComArray.cs" />
     <Compile Include="COM\ComObject.cs" />
@@ -676,7 +670,9 @@
     <Content Include="DXGI\Documentation\CodeComments.xml" />
     <Content Include="MediaFoundation\Documentation\CodeComments.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Codecs\DDP\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -824,10 +824,10 @@ namespace AudioSharp.SoundOut
                         Debug.WriteLine("No channelmatrix was found.");
                     }
                 }
-                //DmoResampler resampler = channelMatrix != null
-                //    ? new DmoChannelResampler(source, channelMatrix, finalFormat)
-                //    : new DmoResampler(source, finalFormat);
-                //resampler.Quality = 60;
+                DmoResampler resampler = channelMatrix != null
+                   ? new DmoChannelResampler(source, channelMatrix, finalFormat)
+                  : new DmoResampler(source, finalFormat);
+                resampler.Quality = 60;
 
                 //_source = resampler;
                 _createdResampler = true;
