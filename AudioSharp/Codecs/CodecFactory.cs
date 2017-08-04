@@ -22,7 +22,7 @@ namespace AudioSharp.Codecs
     /// </summary>
     public class CodecFactory
     {
-// ReSharper disable once InconsistentNaming
+        // ReSharper disable once InconsistentNaming
         private static readonly CodecFactory _instance = new CodecFactory();
 
         private readonly Dictionary<object, CodecFactoryEntry> _codecs;
@@ -138,7 +138,7 @@ namespace AudioSharp.Codecs
         /// <exception cref="NotSupportedException">The codec of the specified file is not supported.</exception>
         public IWaveSource GetCodec(string filename)
         {
-            if(String.IsNullOrEmpty(filename))
+            if (String.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
 
             if (!File.Exists(filename))
@@ -186,6 +186,20 @@ namespace AudioSharp.Codecs
                 return source;
 
             return Default(filename);
+        }
+
+        public CodecFactoryEntry GetCodeEntry(string key)
+        {
+            foreach (var codecEntry in _codecs)
+            {
+                if (
+                    codecEntry.Value.FileExtensions.Any(
+                        x => x.Equals(key, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return codecEntry.Value;
+                }
+            }
+            throw new NotSupportedException();
         }
 
         /// <summary>

@@ -72,3 +72,6 @@ remove.bat
 
 # CSCore.Ffmpeg binaries:
 !**/CSCore.Ffmpeg/FFmpeg/**
+*.db
+*.db
+/.vs/AudioSharp/v15/Browse.VC.db

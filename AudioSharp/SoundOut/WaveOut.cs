@@ -17,7 +17,7 @@ namespace AudioSharp.SoundOut
     {
         private readonly WaveCallback _callback;
         private readonly Queue<int> _failedBuffers = new Queue<int>();
-        private readonly object _lockObject = new object();
+        private static readonly object _lockObject = new object();
         private int _activeBuffers;
         private WaveOutBuffer[] _buffers;
         private Thread _callbackThread;
@@ -253,11 +253,11 @@ namespace AudioSharp.SoundOut
             get { return _source; }
         }
 
-        public long Position
+        public long GetPosition()
         {
-            get
+            if (Monitor.TryEnter(_lockObject, 10))
             {
-                lock (_lockObject)
+                try
                 {
                     if (_waveOutHandle == IntPtr.Zero)
                         return 0;
@@ -269,7 +269,12 @@ namespace AudioSharp.SoundOut
                         return mmTime.ms;
                     }
                 }
+                finally
+                {
+                    Monitor.Exit(_lockObject);
+                }
             }
+            return 0;
         }
 
 
@@ -379,11 +384,11 @@ namespace AudioSharp.SoundOut
             }
 
             _failedBuffers.Clear();
-            var bufferSize = (int) WaveSource.WaveFormat.MillisecondsToBytes(_latency);
+            var bufferSize = (int)WaveSource.WaveFormat.MillisecondsToBytes(_latency);
             _buffers = new WaveOutBuffer[BufferCount];
             for (int i = 0; i < _buffers.Length; i++)
             {
-                _buffers[i] = new WaveOutBuffer(_waveOutHandle, bufferSize, (IntPtr) i);
+                _buffers[i] = new WaveOutBuffer(_waveOutHandle, bufferSize, (IntPtr)i);
             }
         }
 
@@ -408,7 +413,7 @@ namespace AudioSharp.SoundOut
                 }
 
                 Debug.Assert(_callbackThread == Thread.CurrentThread, "Strange thread?");
-                var index = (int) header.userData;
+                var index = (int)header.userData;
                 WaveOutBuffer buffer = _buffers[index];
 
                 Interlocked.Decrement(ref _activeBuffers);
@@ -542,7 +547,7 @@ namespace AudioSharp.SoundOut
         {
             IntPtr handle;
             MmException.Try(NativeMethods.waveOutOpen(out handle,
-                (IntPtr) Device.DeviceId,
+                (IntPtr)Device.DeviceId,
                 waveFormat,
                 _callback,
                 IntPtr.Zero,

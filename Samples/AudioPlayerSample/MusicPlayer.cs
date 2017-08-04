@@ -9,7 +9,7 @@ namespace AudioPlayerSample
 {
     public class MusicPlayer : Component
     {
-        private WaveOut _soundOut;
+        private ISoundOut _soundOut;
         private IWaveSource _waveSource;
 
 		public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
@@ -43,8 +43,8 @@ namespace AudioPlayerSample
         {
             get
             {
-                if (_soundOut != null)
-                    return Extensions.GetTime(_waveSource,_soundOut.Position);
+                //if (_soundOut != null)
+                  //  return Extensions.GetTime(_waveSource,_soundOut.Position);
                 return TimeSpan.Zero;
             }
         }
@@ -84,7 +84,7 @@ namespace AudioPlayerSample
                     .ToSampleSource()
                     .ToMono()
                     .ToWaveSource();
-            _soundOut = new WaveOut() {Latency = 100, Device = device};
+            _soundOut = new DirectSoundOut() {Latency = 100};
             _soundOut.Initialize(_waveSource);
 			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }
