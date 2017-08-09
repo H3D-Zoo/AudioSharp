@@ -21,7 +21,13 @@ namespace AudioSharp.DMO
             throw new NotImplementedException();
         }
 
-        
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* mediaBuffer,
+            InputDataBufferFlags flags, long timestamp, long timeduration, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+
         internal static unsafe int CalliMethodPtr(void* _basePtr, ProcessOutputFlags flags,
             DmoOutputDataBuffer[] buffers, int bufferCount)
         {

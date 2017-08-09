@@ -642,7 +642,31 @@ namespace AudioSharp.SoundOut
             const int reftimesPerMillisecond = 10000;
 
             _audioClient = AudioClient.FromMMDevice(Device);
-            _outputFormat = SetupWaveFormat(_source, _audioClient);
+            _outputFormat = SetupWaveFormat(_source, _audioClient,_shareMode,Device);
+
+            if(!_outputFormat .Equals(_source.WaveFormat))
+            {
+                //todo: test channel matrix conversion
+                ChannelMatrix channelMatrix = null;
+                if (UseChannelMixingMatrices)
+                {
+                    try
+                    {
+                        channelMatrix = ChannelMatrix.GetMatrix(_source.WaveFormat, _outputFormat);
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("No channelmatrix was found.");
+                    }
+                }
+                DmoResampler resampler = channelMatrix != null
+                   ? new DmoChannelResampler(_source, channelMatrix, _outputFormat)
+                  : new DmoResampler(_source, _outputFormat);
+                resampler.Quality = 60;
+
+                _source = resampler;
+                _createdResampler = true;
+            }
 
             long latency = _latency * reftimesPerMillisecond;
             AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
@@ -744,39 +768,47 @@ namespace AudioSharp.SoundOut
             _isInitialized = false;
         }
 
-        private WaveFormat SetupWaveFormat(IWaveSource source, AudioClient audioClient)
+        public WaveFormat GetFinalFormat(IWaveSource source)
+        {
+            using (var audioClient = AudioClient.FromMMDevice(Device))
+            {
+                return SetupWaveFormat(source, audioClient, _shareMode,Device);
+            }
+        }
+
+        private static WaveFormat SetupWaveFormat(IWaveSource source, AudioClient audioClient,AudioClientShareMode shareMode,MMDevice device)
         {
             WaveFormat waveFormat = source.WaveFormat;
             WaveFormat closestMatch;
             WaveFormat finalFormat = waveFormat;
             //check whether initial format is supported
-            if (!audioClient.IsFormatSupported(_shareMode, waveFormat, out closestMatch))
+            if (!audioClient.IsFormatSupported(shareMode, waveFormat, out closestMatch))
             {
                 //initial format is not supported -> maybe there was some kind of close match ...
                 //we don't know why, but for some reason, the suggested closestMatch must not be supported ... see #159
-                if (closestMatch == null || !audioClient.IsFormatSupported(_shareMode, closestMatch))
+                if (closestMatch == null || !audioClient.IsFormatSupported(shareMode, closestMatch))
                 {
                     //no match ... check whether the format of the windows audio mixer is supported
                     //yes ... this gets executed for shared and exclusive mode streams
                     WaveFormat mixformat = audioClient.GetMixFormat();
-                    if (_shareMode == AudioClientShareMode.Exclusive)
-                        mixformat = Device.DeviceFormat;
-                    if (mixformat == null || !audioClient.IsFormatSupported(_shareMode, mixformat))
+                    if (shareMode == AudioClientShareMode.Exclusive)
+                        mixformat = device.DeviceFormat;
+                    if (mixformat == null || !audioClient.IsFormatSupported(shareMode, mixformat))
                     {
                         //mixformat is not supported
                         //start generating possible formats
 
                         mixformat = null;
                         WaveFormatExtensible[] possibleFormats;
-                        if (_shareMode == AudioClientShareMode.Exclusive)
+                        if (shareMode == AudioClientShareMode.Exclusive)
                         {
                             //for exclusive mode streams use the DeviceFormat of the initialized MMDevice
                             //as base for further possible formats
-                            var deviceFormat = Device.DeviceFormat;
+                            var deviceFormat = device.DeviceFormat;
 
                             //generate some possible formats based on the samplerate of the DeviceFormat
                             possibleFormats = GetPossibleFormats(deviceFormat.SampleRate, deviceFormat.Channels);
-                            if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
+                            if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat,shareMode))
                             {
                                 //none of the tested formats were supported
                                 //try some different samplerates
@@ -799,7 +831,7 @@ namespace AudioSharp.SoundOut
 
                         if (mixformat == null)
                         {
-                            if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
+                            if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat,shareMode))
                             {
                                 throw new NotSupportedException("Could not find a supported format.");
                             }
@@ -811,34 +843,13 @@ namespace AudioSharp.SoundOut
                 else
                     finalFormat = closestMatch;
 
-                //todo: test channel matrix conversion
-                ChannelMatrix channelMatrix = null;
-                if (UseChannelMixingMatrices)
-                {
-                    try
-                    {
-                        channelMatrix = ChannelMatrix.GetMatrix(_source.WaveFormat, finalFormat);
-                    }
-                    catch (Exception)
-                    {
-                        Debug.WriteLine("No channelmatrix was found.");
-                    }
-                }
-                DmoResampler resampler = channelMatrix != null
-                   ? new DmoChannelResampler(source, channelMatrix, finalFormat)
-                  : new DmoResampler(source, finalFormat);
-                resampler.Quality = 60;
-
-                //_source = resampler;
-                _createdResampler = true;
-
                 return finalFormat;
             }
 
             return finalFormat;
         }
 
-        private WaveFormatExtensible[] GetPossibleFormats(int sampleRate, int suggestedNumberOfChannels)
+        private static WaveFormatExtensible[] GetPossibleFormats(int sampleRate, int suggestedNumberOfChannels)
         {
             return new[]
             {
@@ -875,13 +886,13 @@ namespace AudioSharp.SoundOut
             };
         }
 
-        private bool CheckForSupportedFormat(AudioClient audioClient, IEnumerable<WaveFormatExtensible> waveFormats,
-            out WaveFormat foundMatch)
+        private static bool CheckForSupportedFormat(AudioClient audioClient, IEnumerable<WaveFormatExtensible> waveFormats,
+            out WaveFormat foundMatch,AudioClientShareMode shareMode)
         {
             foundMatch = null;
             foreach (WaveFormatExtensible format in waveFormats)
             {
-                if (audioClient.IsFormatSupported(_shareMode, format))
+                if (audioClient.IsFormatSupported(shareMode, format))
                 {
                     foundMatch = format;
                     return true;

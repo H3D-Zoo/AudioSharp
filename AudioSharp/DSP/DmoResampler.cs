@@ -9,7 +9,7 @@ namespace AudioSharp.DSP
     /// </summary>
     public class DmoResampler : WaveAggregatorBase
     {
-        internal MediaBuffer InputBuffer;
+        internal DMO.MONO.MediaBuffer InputBuffer;
         internal object LockObj = new object();
         internal DmoOutputDataBuffer OutputBuffer;
         internal WaveFormat Outputformat;
@@ -156,7 +156,7 @@ namespace AudioSharp.DSP
                     throw new NotSupportedException("Outputformat not supported.");
                 mediaObject.SetOutputType(0, outputformat);
 
-                InputBuffer = new MediaBuffer(inputformat.BytesPerSecond / 2);
+                InputBuffer = new DMO.MONO.MediaBuffer(inputformat.BytesPerSecond / 2);
                 OutputBuffer = new DmoOutputDataBuffer(outputformat.BytesPerSecond / 2);
             }
         }
@@ -200,7 +200,7 @@ namespace AudioSharp.DSP
                         if (InputBuffer.MaxLength < bytesRead)
                         {
                             InputBuffer.Dispose();
-                            InputBuffer = new MediaBuffer(bytesRead);
+                            InputBuffer = new DMO.MONO.MediaBuffer(bytesRead);
                         }
                         InputBuffer.Write(_readBuffer, 0, bytesRead);
 
@@ -209,15 +209,16 @@ namespace AudioSharp.DSP
                         OutputBuffer.Reset();
                         do
                         {
-                            var outputBuffer = (MediaBuffer) OutputBuffer.Buffer;
+                            var outputBuffer = OutputBuffer.Buffer;
                             if (outputBuffer.MaxLength < count)
                             {
-                                outputBuffer.Dispose();
-                                OutputBuffer.Buffer = new MediaBuffer(count);
+                                OutputBuffer.Buffer.Dispose();
+                                OutputBuffer.Buffer = new DMO.MONO.MediaBuffer(count);
                             }
                             OutputBuffer.Buffer.SetLength(0);
 
-                            mediaObject.ProcessOutput(ProcessOutputFlags.None, new[] {OutputBuffer}, 1);
+                            mediaObject.ProcessOutput(OutputBuffer);
+                            //mediaObject.ProcessOutput(ProcessOutputFlags.None, new[] {OutputBuffer}, 1);
 
                             if (OutputBuffer.Length <= 0)
                             {

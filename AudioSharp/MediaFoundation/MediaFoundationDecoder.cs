@@ -196,6 +196,7 @@ namespace AudioSharp.MediaFoundation
             get { return _waveFormat; }
         }
 
+
         /// <summary>
         ///     Gets or sets the position of the output stream, in bytes.
         /// </summary>

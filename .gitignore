@@ -57,6 +57,9 @@ $tf/
 commit.bat
 remove.bat
 *.opensdf
+*.opendb
+*.db-shm
+*.db-wal
 
 # others #
 ##########
@@ -75,3 +78,5 @@ remove.bat
 *.db
 *.db
 /.vs/AudioSharp/v15/Browse.VC.db
+ipch/
+vs15/

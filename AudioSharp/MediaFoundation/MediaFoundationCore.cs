@@ -90,18 +90,19 @@ namespace AudioSharp.MediaFoundation
 
         public static MediaType MediaTypeFromWaveFormat(WaveFormat waveFormat)
         {
-            var _waveFormat =
-                    SharpDX.Multimedia.WaveFormat.CreateCustomFormat( (SharpDX.Multimedia.WaveFormatEncoding)(short)waveFormat.WaveFormatTag,
-                waveFormat.SampleRate,
-                waveFormat.Channels,
-                waveFormat.BytesPerSecond,
-                waveFormat.BlockAlign,
-                waveFormat.BitsPerSample)
-               ;
             var mediaType = new MediaType();
-            MediaFactory.InitMediaTypeFromWaveFormatEx(mediaType,
-                new SharpDX.Multimedia.WaveFormat[] {_waveFormat},
-                Marshal.SizeOf(waveFormat));
+            mediaType.SubType = AudioSubTypes.SubTypeFromEncoding(waveFormat.WaveFormatTag);
+            mediaType.SampleRate = waveFormat.SampleRate;
+            mediaType.Channels = waveFormat.Channels;
+            mediaType.AverageBytesPerSecond = waveFormat.BytesPerSecond;
+            mediaType.BitsPerSample = waveFormat.BitsPerSample;
+            return mediaType;
+        }
+
+        public static MediaType MediaTypeFromWaveFormat(WaveFormatExtensible waveFormat)
+        {
+            var mediaType = new MediaType();
+            MediaFactory.MFInitMediaTypeFromWaveFormatEx(mediaType, waveFormat, Marshal.SizeOf(waveFormat));
             return mediaType;
         }
     }

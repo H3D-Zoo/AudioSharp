@@ -139,9 +139,6 @@ namespace AudioSharp.Tags.ID3.Frames
                 case FrameID.OwnershipFrame:
                     return new OwnershipFrame(header);
 
-                case FrameID.CommercialFrame:
-                    return new CommercialFrame(header);
-
                 case FrameID.Popularimeter:
                     return new Popularimeter(header);
             }

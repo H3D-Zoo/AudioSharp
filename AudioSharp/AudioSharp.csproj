@@ -103,7 +103,6 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -551,7 +550,6 @@
     <Compile Include="Streams\SoundInSource.cs" />
     <Compile Include="Tags\ID3\Frames\BinaryFrame.cs" />
     <Compile Include="Tags\ID3\Frames\CommentAndLyricsFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\CommercialFrame.cs" />
     <Compile Include="Tags\ID3\Frames\DataFrame.cs" />
     <Compile Include="Tags\ID3\Frames\FrameIDFactory.cs" />
     <Compile Include="Tags\ID3\Frames\MultiStringTextFrame.cs" />

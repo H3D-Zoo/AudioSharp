@@ -6,13 +6,36 @@ namespace AudioSharp.DMO
     /// <summary>
     ///     Represents a Dmo output data buffer. For more details see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd375507(v=vs.85).aspx"/>.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public struct DmoOutputDataBuffer : IDisposable
+    public class DmoOutputDataBuffer : IDisposable
     {
+        [StructLayout(LayoutKind.Sequential, Pack = 8)]
+        public struct DMO_OUTPUT_DATA_BUFFER
+        {
+            public IntPtr Buffer;
+            public OutputDataBufferFlags Status;
+            public long Timestamp;
+            public long TimeLength;
+        }
+
+        public DMO_OUTPUT_DATA_BUFFER Native
+        {
+            get
+            {
+                return new DMO_OUTPUT_DATA_BUFFER
+                {
+                    Buffer = Buffer.NativePointer,
+                    Status = Status,
+                    Timestamp = Timestamp,
+                    TimeLength = TimeLength
+                };
+            }
+        }
+
+
         /// <summary>
         ///     Pointer to the <see cref="IMediaBuffer"/> interface of a buffer allocated by the application.
         /// </summary>
-        [MarshalAs(UnmanagedType.Interface)] public IMediaBuffer Buffer;
+        public MONO.MediaBuffer Buffer;
 
         /// <summary>
         ///     Status flags. After processing output, the DMO sets this member to a bitwise combination
@@ -40,7 +63,7 @@ namespace AudioSharp.DMO
         /// <param name="bufferSize">The maxlength (in bytes) of the internally used <see cref="MediaBuffer"/>.</param>
         public DmoOutputDataBuffer(int bufferSize)
         {
-            Buffer = new MediaBuffer(bufferSize);
+            Buffer = new MONO.MediaBuffer(bufferSize);
             Status = OutputDataBufferFlags.None;
             Timestamp = 0;
             TimeLength = 0;
@@ -56,7 +79,7 @@ namespace AudioSharp.DMO
         /// </summary>
         public int Length
         {
-            get { return ((MediaBuffer) Buffer).Length; }
+            get { return Buffer.Length; }
         }
 
         /// <summary>
@@ -70,7 +93,7 @@ namespace AudioSharp.DMO
         /// <returns>The number of read bytes.</returns>        
         public void Read(byte[] buffer, int offset)
         {
-            ((MediaBuffer) Buffer).Read(buffer, offset);
+            Buffer.Read(buffer, offset);
         }
 
         /// <summary>
@@ -87,7 +110,7 @@ namespace AudioSharp.DMO
         {
             count = Math.Min(count, Length);
 
-            ((MediaBuffer) Buffer).Read(buffer, offset, count);
+            Buffer.Read(buffer, offset, count);
 
             return count;
         }
@@ -107,7 +130,7 @@ namespace AudioSharp.DMO
         {
             count = Math.Min(count, Length - sourceOffset);
 
-            ((MediaBuffer) Buffer).Read(buffer, offset, count, sourceOffset);
+            Buffer.Read(buffer, offset, count, sourceOffset);
 
             return count;
         }
@@ -129,8 +152,7 @@ namespace AudioSharp.DMO
         {
             if (Buffer != null)
             {
-                ((MediaBuffer) Buffer).Dispose();
-                Buffer = null;
+                Buffer.Dispose();
             }
             GC.SuppressFinalize(this);
         }

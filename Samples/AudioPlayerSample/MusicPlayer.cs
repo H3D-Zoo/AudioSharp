@@ -4,13 +4,14 @@ using AudioSharp;
 using AudioSharp.Codecs;
 using AudioSharp.CoreAudioAPI;
 using AudioSharp.SoundOut;
+using AudioSharp.MediaFoundation;
 
 namespace AudioPlayerSample
 {
     public class MusicPlayer : Component
     {
         private ISoundOut _soundOut;
-        private IWaveSource _waveSource;
+        private MediaFoundationDecoder _waveSource;
 
 		public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
 
@@ -80,11 +81,8 @@ namespace AudioPlayerSample
         {
             CleanupPlayback();
 
-            _waveSource = CodecFactory.Instance.GetCodec(filename)
-                    .ToSampleSource()
-                    .ToMono()
-                    .ToWaveSource();
-            _soundOut = new DirectSoundOut() {Latency = 100};
+            _waveSource =new MediaFoundationDecoder(filename);
+            _soundOut = new WasapiOut() {Latency = 100};
             _soundOut.Initialize(_waveSource);
 			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }

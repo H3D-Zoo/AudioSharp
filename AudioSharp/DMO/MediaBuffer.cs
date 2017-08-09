@@ -77,9 +77,9 @@ namespace AudioSharp.DMO
         int IMediaBuffer.SetLength(int length)
         {
             if (length > MaxLength)
-                return (int) HResult.E_INVALIDARG;
+                return (int)HResult.E_INVALIDARG;
             _length = length;
-            return (int) HResult.S_OK;
+            return (int)HResult.S_OK;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace AudioSharp.DMO
         int IMediaBuffer.GetMaxLength(out int length)
         {
             length = _maxlength;
-            return (int) HResult.S_OK;
+            return (int)HResult.S_OK;
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace AudioSharp.DMO
                 Marshal.WriteIntPtr(ppBuffer, _buffer);
             if (validDataByteLength != IntPtr.Zero)
                 Marshal.WriteInt32(validDataByteLength, _length);
-            return (int) HResult.S_OK;
+            return (int)HResult.S_OK;
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace AudioSharp.DMO
             if (count > Length)
                 throw new ArgumentOutOfRangeException("count", "count is greater than MaxLength");
 
-            var p = (byte*) _buffer.ToPointer();
+            var p = (byte*)_buffer.ToPointer();
             p += sourceOffset;
 
             Marshal.Copy(new IntPtr(p), buffer, offset, count);
@@ -197,5 +197,155 @@ namespace AudioSharp.DMO
         {
             Dispose(false);
         }
+    }
+}
+
+namespace AudioSharp.DMO.MONO
+{
+    public sealed class MediaBuffer : IDisposable
+    {
+        #region PINVOKE
+        [DllImport("AudioSharpDMO")]
+        static extern IntPtr DMOMediaBufferCreate(int maxlength);
+        [DllImport("AudioSharpDMO")]
+        static extern void DMOMediaBufferDestroy(IntPtr ptr);
+
+        [DllImport("AudioSharpDMO")]
+        static extern int DMOMediaBuffer_getMaxLength(IntPtr ptr);
+        [DllImport("AudioSharpDMO")]
+        static extern int DMOMediaBuffer_getLength(IntPtr ptr);
+        [DllImport("AudioSharpDMO")]
+        static extern void DMOMediaBuffer_setLength(IntPtr ptr, int length);
+
+        [DllImport("AudioSharpDMO")]
+        static extern void DMOMediaBufferRead(IntPtr ptr, IntPtr buffer, int offset, int count, int sourceOffset);
+        [DllImport("AudioSharpDMO")]
+        static extern void DMOMediaBufferWrite(IntPtr ptr, IntPtr buffer, int offset, int count);
+        #endregion
+
+
+        private IntPtr nativeptr;
+        private bool hold;
+
+        public MediaBuffer(int maxlength)
+        {
+            nativeptr = DMOMediaBufferCreate(maxlength);
+            hold = true;
+        }
+
+        internal IntPtr NativePointer
+        {
+            get { return nativeptr; }
+        }
+
+        public int MaxLength
+        {
+            get { return DMOMediaBuffer_getMaxLength(nativeptr); }
+        }
+
+        /// <summary>
+        ///     Gets the length of the data currently in the buffer.
+        /// </summary>
+        public int Length
+        {
+            get { return DMOMediaBuffer_getLength(nativeptr); }
+            set
+            {
+                if (value > MaxLength || value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("value",
+                        "Length can not be less than zero or greater than maxlength.");
+                }
+                DMOMediaBuffer_setLength(nativeptr,value);
+            }
+        }
+
+
+        internal void Write(byte[] buffer, int offset, int count)
+        {
+            unsafe
+            {
+                fixed(byte* p = &buffer[0])
+                {
+                    DMOMediaBufferWrite(nativeptr, new IntPtr(p), offset, count);
+                }
+            }
+        }
+
+        internal void Read(byte[] buffer, int offset)
+        {
+            unsafe
+            {
+                fixed (byte* p = &buffer[0])
+                {
+                    DMOMediaBufferRead(nativeptr, new IntPtr(p),offset,Length,0);
+                }
+            }
+        }
+
+        internal void Read(byte[] buffer, int offset, int count)
+        {
+            unsafe
+            {
+                fixed (byte* p = &buffer[0])
+                {
+                    DMOMediaBufferRead(nativeptr, new IntPtr(p), offset, count,0);
+                }
+            }
+        }
+
+        internal void Read(byte[] buffer, int offset, int count, int sourceOffset)
+        {
+            unsafe
+            {
+                fixed (byte* p = &buffer[0])
+                {
+                    DMOMediaBufferRead(nativeptr, new IntPtr(p), offset,count, sourceOffset);
+                }
+            }
+        }
+
+        internal void SetLength(int v)
+        {
+            DMOMediaBuffer_setLength(nativeptr, v);
+        }
+
+        internal MediaBuffer(IntPtr ptr, bool observe = false)
+        {
+            nativeptr = ptr;
+            hold = !observe;
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // 要检测冗余调用
+
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                if (hold)
+                {
+                    DMOMediaBufferDestroy(nativeptr);
+                }
+                disposedValue = true;
+            }
+        }
+
+        ~MediaBuffer()
+        {
+            Dispose(false);
+        }
+
+        // 添加此代码以正确实现可处置模式。
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }

@@ -3776,6 +3776,21 @@ namespace SharpDX.MediaFoundation
         [DllImport("Mfplat.dll", EntryPoint = "MFInitMediaTypeFromWaveFormatEx", CallingConvention = CallingConvention.StdCall)]
         private unsafe static extern int MFInitMediaTypeFromWaveFormatEx_(void* arg0, void* arg1, int arg2);
 
+        [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall)]
+        public unsafe static extern int MFInitMediaTypeFromWaveFormatEx(void* mFTypeRef,[MarshalAs(UnmanagedType.LPStruct)]AudioSharp.WaveFormatExtensible waveFormatRef, int cbBufSize);
+
+        public static void MFInitMediaTypeFromWaveFormatEx(SharpDX.MediaFoundation.MediaType mFTypeRef, [MarshalAs(UnmanagedType.LPStruct)]AudioSharp.WaveFormatExtensible waveFormatRef, int cbBufSize)
+        {
+            unsafe
+            {
+                SharpDX.Result __result__;
+                __result__ =
+                    MFInitMediaTypeFromWaveFormatEx((void*)((mFTypeRef == null) ? IntPtr.Zero : mFTypeRef.NativePointer), waveFormatRef, cbBufSize);
+                __result__.CheckError();
+            }
+        }
+
+
         /// <summary>	
         /// <p> </p><p>Compares a full media type to a partial media type.</p>	
         /// </summary>	

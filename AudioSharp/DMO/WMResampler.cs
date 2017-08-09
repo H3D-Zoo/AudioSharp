@@ -15,10 +15,10 @@ namespace AudioSharp.DMO
             //create a resampler instance
             var obj = new WMResamplerObject();
 
-            _mediaObject = new MediaObject(Marshal.GetComInterfaceForObject((IMediaObject) obj, typeof (IMediaObject)));
+            _mediaObject = new MediaObject(Marshal.GetComInterfaceForObject((IMediaObject)obj, typeof(IMediaObject)));
             _resamplerprops =
                 new WMResamplerProps(Marshal.GetComInterfaceForObject(obj as IWMResamplerProps,
-                    typeof (IWMResamplerProps)));
+                    typeof(IWMResamplerProps)));
 
             _obj = obj;
         }
@@ -74,5 +74,84 @@ namespace AudioSharp.DMO
         private class WMResamplerObject
         {
         }
+    }
+}
+
+namespace AudioSharp.DMO.MONO
+{
+    internal sealed class WMResampler : IDisposable
+    {
+        #region PINVOKE
+        [DllImport("AudioSharpDMO")]
+        static extern IntPtr DMOWMResamplerCreate();
+
+        [DllImport("AudioSharpDMO")]
+        static extern void DMOWMResamlerDestroy(IntPtr ptr);
+
+        [DllImport("AudioSharpDMO")]
+        static extern IntPtr DMOWMResamler_mediaObject(IntPtr ptr);
+
+        [DllImport("AudioSharpDMO")]
+        static extern IntPtr DMOWMResamler_resamplerprops(IntPtr ptr);
+
+        #endregion
+
+        IntPtr nativeptr;
+        private MediaObject _mediaObject;
+        private WMResamplerProps _resamplerprops;
+
+        WMResampler()
+        {
+            nativeptr = DMOWMResamplerCreate();
+            _mediaObject = new MediaObject(DMOWMResamler_mediaObject(nativeptr), true);
+            _resamplerprops = new WMResamplerProps(DMOWMResamler_resamplerprops(nativeptr), true);
+        }
+
+        ~WMResampler()
+        {
+            Dispose(false);
+        }
+
+        public WMResamplerProps ResamplerProps
+        {
+            get { return _resamplerprops; }
+        }
+
+        public MediaObject MediaObject
+        {
+            get { return _mediaObject; }
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // 要检测冗余调用
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (_resamplerprops != null)
+                {
+                    _resamplerprops.Dispose();
+                    _resamplerprops = null;
+                }
+                if (_mediaObject != null)
+                {
+                    _mediaObject.Dispose();
+                    _mediaObject = null;
+                }
+
+                DMOWMResamlerDestroy(nativeptr);
+
+                disposedValue = true;
+            }
+        }
+
+        
+        void IDisposable.Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
+
     }
 }
