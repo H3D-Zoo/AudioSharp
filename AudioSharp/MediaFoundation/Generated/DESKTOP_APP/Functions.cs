@@ -6478,15 +6478,15 @@ namespace SharpDX.MediaFoundation
             {
                 IntPtr sourceReaderOut_ = IntPtr.Zero;
                 SharpDX.Result __result__;
-                fixed (char* wszURLRef_ = wszURLRef)
-                    __result__ =
-                    MFCreateSourceReaderFromURL_((void*)wszURLRef_, (void*)((attributesRef == null) ? IntPtr.Zero : attributesRef.NativePointer), &sourceReaderOut_);
+
+                __result__ =
+                MFCreateSourceReaderFromURL_(wszURLRef, (void*)((attributesRef == null) ? IntPtr.Zero : attributesRef.NativePointer), &sourceReaderOut_);
                 ((SharpDX.MediaFoundation.SourceReader)sourceReaderOut).NativePointer = sourceReaderOut_;
                 __result__.CheckError();
             }
         }
         [DllImport("Mfreadwrite.dll", EntryPoint = "MFCreateSourceReaderFromURL", CallingConvention = CallingConvention.StdCall)]
-        private unsafe static extern int MFCreateSourceReaderFromURL_(void* arg0, void* arg1, void* arg2);
+        private unsafe static extern int MFCreateSourceReaderFromURL_([MarshalAs(UnmanagedType.LPWStr)]string arg0, void* arg1,void* arg2);
 
         /// <summary>	
         /// <p>Creates the source reader from a byte stream.</p>	
